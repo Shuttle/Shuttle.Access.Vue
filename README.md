@@ -1,3 +1,3 @@
-# Shuttle.Access
+# Shuttle.Access.Vue
 
-An abstration layer for identity and access control.
+A [Vue](https://vuejs.org/) front-end implementation for interacting with the Shuttle.Access platform.
