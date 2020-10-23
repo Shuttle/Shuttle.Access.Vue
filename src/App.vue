@@ -11,11 +11,13 @@
     </div>
     <footer class="footer p-2">
       <div class="container-fluid text-center">
-        <div class="d-none d-xl-block font-weight-bold">X-LARGE (XL)</div>
-        <div class="d-none d-lg-block d-xl-none font-weight-bold">LARGE (LG)</div>
-        <div class="d-none d-md-block d-lg-none font-weight-bold">MEDIUM (M)</div>
-        <div class="d-none d-sm-block d-md-none font-weight-bold">SMALL (SM)</div>
-        <div class="d-block d-sm-none alert font-weight-bold">X-SMALL (Default)</div>
+        <div v-if="debugging">
+          <div class="d-none d-xl-block font-weight-bold">X-LARGE (XL)</div>
+          <div class="d-none d-lg-block d-xl-none font-weight-bold">LARGE (LG)</div>
+          <div class="d-none d-md-block d-lg-none font-weight-bold">MEDIUM (M)</div>
+          <div class="d-none d-sm-block d-md-none font-weight-bold">SMALL (SM)</div>
+          <div class="d-block d-sm-none alert font-weight-bold">X-SMALL (Default)</div>
+        </div>
         <p class="m-0">Copyright (c) 2020 Shuttle</p>
       </div>
     </footer>
