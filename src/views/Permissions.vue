@@ -1,15 +1,19 @@
 <template>
   <div>
-    <s-title :text="$t('roles')" />
+    <s-title :text="$t('permissions')" />
     <s-working v-if="working" />
-    <b-form @submit="add" class="my-2" v-if="$access.hasPermission('access://roles/manage')">
+    <b-form
+      class="my-2"
+      @submit="add"
+      v-if="$access.hasPermission('access://permission/manage')"
+    >
       <b-input-group>
         <b-input-group-prepend>
           <b-button variant="outline-primary" @click="add">
             <font-awesome-icon icon="plus-square" />
           </b-button>
         </b-input-group-prepend>
-        <b-form-input v-model="form.roleName"></b-form-input>
+        <b-form-input v-model="form.permission"></b-form-input>
       </b-input-group>
     </b-form>
     <b-table
@@ -19,22 +23,13 @@
       dark
       responsive="md"
     >
-      <template v-slot:cell(permissions)="data">
-        <b-button
-          variant="outline-primary"
-          @click="permissions(data.item)"
-          size="sm"
-          :disabled="!$access.hasPermission('access://roles/manage')"
-          ><font-awesome-icon icon="shield-alt"
-        /></b-button>
-      </template>
       <template v-slot:cell(remove)="data">
         <b-button
           variant="outline-danger"
           v-b-modal.modal-confirmation
           size="sm"
-          @click="selectRole(data.item)"
-          :disabled="!$access.hasPermission('access://roles/manage')"
+          @click="selectItem(data.item)"
+          :disabled="!$access.hasPermission('access://users/manage')"
         >
           <font-awesome-icon icon="trash-alt" />
         </b-button>
@@ -64,23 +59,17 @@
 import { required } from "vuelidate/lib/validators";
 
 export default {
-  name: "Roles",
+  name: "Users",
   data() {
     return {
       items: Array,
       fields: Array,
-      selectedRole: Object,
+      selectedItem: Object,
+      working: false,
       form: {
-        roleName: "",
+        permission: "",
       },
     };
-  },
-  validations: {
-    form: {
-      roleName: {
-        required,
-      },
-    },
   },
   computed: {
     hasItems() {
@@ -93,14 +82,22 @@ export default {
       return !this.hasItems && !this.working;
     },
   },
-  methods: {
-    permissions(data) {
-      this.$router.push({ name: "role-permissions", params: { id: data.id } });
+  validations: {
+    form: {
+      permission: {
+        required,
+      },
     },
+  },
+  methods: {
     refresh() {
       const self = this;
 
-      this.$api.get("roles").then(function (response) {
+      this.$api.get("permissions").then(function (response) {
+        if (!response || !response.data) {
+          return;
+        }
+
         self.items = response.data;
       });
     },
@@ -114,26 +111,26 @@ export default {
       }
 
       this.$api
-        .post("roles", {
-          name: this.form.roleName,
+        .post("permissions", {
+          permission: this.form.permission,
         })
         .then(function () {
-          self.$store.dispatch("addAlert", {
-            message: self.$i18n.t("request-sent"),
-          });
+          self.refresh();
         });
     },
     remove() {
       const self = this;
 
-      this.$api.delete(`roles/${this.selectedRole.id}`).then(function () {
-        self.$store.dispatch("addAlert", {
-          message: self.$i18n.t("request-sent"),
+      this.$api
+        .delete("permissions", {
+          data: self.selectedItem,
+        })
+        .then(function () {
+          self.refresh();
         });
-      });
     },
-    selectRole(item) {
-      this.selectedRole = item;
+    selectItem(item) {
+      this.selectedItem = item;
     },
   },
   beforeMount() {
@@ -142,15 +139,11 @@ export default {
     this.fields = [
       {
         label: "",
-        key: "permissions",
-      },
-      {
-        label: "",
         key: "remove",
       },
       {
-        label: this.$i18n.t("role-name"),
-        key: "roleName",
+        label: this.$i18n.t("permission"),
+        key: "permission",
         thClass: "col",
       },
     ];

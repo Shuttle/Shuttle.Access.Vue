@@ -45,3 +45,7 @@ body {
 input, select {
     background-color: #ccc;
 }
+
+th.button {
+    width: 40px;
+}

@@ -15,6 +15,9 @@
         <b-navbar-nav v-if="$access.hasPermission('access://users/view')">
           <b-nav-item to="/users">{{ $t("users") }}</b-nav-item>
         </b-navbar-nav>
+        <b-navbar-nav v-if="$access.hasPermission('access://permissions/manage')">
+          <b-nav-item to="/permissions">{{ $t("permissions") }}</b-nav-item>
+        </b-navbar-nav>
         <b-navbar-nav class="ml-auto" right v-if="authenticated">
           <b-nav-item to="/password">
             <font-awesome-icon icon="key" />

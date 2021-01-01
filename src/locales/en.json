@@ -1,5 +1,7 @@
 {
     "change": "Change",
+    "date-activated": "Date activated",
+    "date-registered": "Date registered",
     "login": "Login",
     "username": "Username",
     "password": "Password",
@@ -7,6 +9,7 @@
     "new-password": "New password",
     "new-password-confirm": "New password (confirm)",
     "register": "Register",
+    "registered-by": "Registered by",
     "password-mismatch": "Your new password must must the new confirmation password.",
     "profile": "Profile",
     "roles": "Roles",
@@ -33,5 +36,8 @@
         "access-failure": "Could not initialize the `shuttle-access` module.  The back-end may not be available.",
         "register": "Could not register user.  Exception: {0}"
     },
-    "working-message": "Please wait until the current operation completes and then try again."
+    "working-message": "Please wait until the current operation completes and then try again.",
+    "messages": {
+        "no-items": "There are no items to display."
+    }
 }

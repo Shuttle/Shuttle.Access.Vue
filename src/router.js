@@ -54,6 +54,14 @@ const router = new Router({
             }
         },
         {
+            path: '/permissions',
+            name: 'permissions',
+            component: () => import(/* webpackChunkName: "permissions" */ './views/Permissions.vue'),
+            meta: {
+                permission: 'access://permissions/manage'
+            }
+        },
+        {
             path: '/profile',
             name: 'profile',
             component: () => import(/* webpackChunkName: "profile" */ './views/Profile.vue'),

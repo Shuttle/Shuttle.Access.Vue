@@ -1,7 +1,8 @@
 <template>
   <div>
     <s-title :text="$t('users')" />
-    <b-form class="my-2" v-if="$access.hasPermission('access://users/manage')">
+    <s-working v-if="working" />
+    <b-form @submit="add" class="my-2" v-if="$access.hasPermission('access://users/manage')">
       <b-input-group>
         <b-input-group-prepend>
           <b-button variant="outline-primary" @click="add">
@@ -11,7 +12,7 @@
         <b-form-input v-model="form.username"></b-form-input>
       </b-input-group>
     </b-form>
-    <b-table :items="users" :fields="fields" dark responsive="md">
+    <b-table v-if="showResults" :items="items" :fields="fields" dark small stacked="md">
       <template v-slot:cell(roles)="data">
         <b-button
           variant="outline-primary"
@@ -42,25 +43,45 @@
       :cancel-title="$t('cancel')"
       @ok="remove"
     >
-      <p>{{$t('confirmation-remove.message')}}</p>
+      <p>{{ $t("confirmation-remove.message") }}</p>
     </b-modal>
+    <b-alert
+      v-if="showResultsEmpty"
+      show
+      variant="info"
+      class="mt-2 text-center"
+      >{{ $t("messages.no-items") }}</b-alert
+    >
   </div>
 </template>
 
 <script>
 import { required } from "vuelidate/lib/validators";
+import formatter from "../formatter";
 
 export default {
   name: "Users",
   data() {
     return {
-      users: Array,
+      items: Array,
       fields: Array,
-      selectedRole: Object,
+      selectedUser: Object,
+      working: false,
       form: {
         username: "",
       },
     };
+  },
+  computed: {
+    hasItems() {
+      return this.items && this.items.length > 0;
+    },
+    showResults() {
+      return this.hasItems && !this.working;
+    },
+    showResultsEmpty() {
+      return !this.hasItems && !this.working;
+    },
   },
   validations: {
     form: {
@@ -81,7 +102,7 @@ export default {
           return;
         }
 
-        self.users = response.data;
+        self.items = response.data;
       });
     },
     add(evt) {
@@ -123,16 +144,31 @@ export default {
       {
         label: "",
         key: "roles",
+        thClass: "button",
       },
       {
         label: "",
         key: "remove",
+        thClass: "button",
       },
       {
         label: this.$i18n.t("username"),
         key: "username",
-        thClass: "col",
       },
+      {
+        label: this.$i18n.t("date-registered"),
+        key: "dateRegistered",
+        formatter: formatter.date,
+      },
+      {
+        label: this.$i18n.t("registered-by"),
+        key: "registeredBy",
+      },
+      {
+        label: this.$i18n.t("date-activated"),
+        key: "dateActivated",
+        formatter: formatter.date,
+      }
     ];
 
     this.$store.dispatch("addSecondaryNavbarItem", {
