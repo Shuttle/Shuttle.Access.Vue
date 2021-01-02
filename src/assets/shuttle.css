@@ -49,3 +49,7 @@ input, select {
 th.button {
     width: 40px;
 }
+
+.b-table-busy-slot {
+    text-align: center;
+}

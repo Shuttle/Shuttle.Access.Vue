@@ -1,7 +1,6 @@
 <template>
   <div>
     <s-title :text="$t('permissions')" />
-    <s-working v-if="working" />
     <b-form
       class="my-2"
       @submit="add"
@@ -17,12 +16,17 @@
       </b-input-group>
     </b-form>
     <b-table
-      v-if="showResults"
       :items="items"
       :fields="fields"
       dark
-      responsive="md"
+      stacked="md"
+      :busy="working"
+      show-empty
+      :empty-text="$t('messages.no-items')"
     >
+      <template #table-busy>
+        <s-working />
+      </template>
       <template v-slot:cell(remove)="data">
         <b-button
           variant="outline-danger"
@@ -45,13 +49,6 @@
     >
       <p>{{ $t("confirmation-remove.message") }}</p>
     </b-modal>
-    <b-alert
-      v-if="showResultsEmpty"
-      show
-      variant="info"
-      class="mt-2 text-center"
-      >{{ $t("messages.no-items") }}</b-alert
-    >
   </div>
 </template>
 
@@ -62,25 +59,14 @@ export default {
   name: "Users",
   data() {
     return {
-      items: Array,
-      fields: Array,
+      items: [],
+      fields: [],
       selectedItem: Object,
       working: false,
       form: {
         permission: "",
       },
     };
-  },
-  computed: {
-    hasItems() {
-      return this.items && this.items.length > 0;
-    },
-    showResults() {
-      return this.hasItems && !this.working;
-    },
-    showResultsEmpty() {
-      return !this.hasItems && !this.working;
-    },
   },
   validations: {
     form: {
@@ -93,13 +79,20 @@ export default {
     refresh() {
       const self = this;
 
-      this.$api.get("permissions").then(function (response) {
-        if (!response || !response.data) {
-          return;
-        }
+      this.working = true;
 
-        self.items = response.data;
-      });
+      this.$api
+        .get("permissions")
+        .then(function (response) {
+          if (!response || !response.data) {
+            return;
+          }
+
+          self.items = response.data;
+        })
+        .finally(function () {
+          self.working = false;
+        });
     },
     add(evt) {
       const self = this;

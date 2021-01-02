@@ -1,8 +1,11 @@
 <template>
   <div>
     <s-title :text="$t('roles')" />
-    <s-working v-if="working" />
-    <b-form @submit="add" class="my-2" v-if="$access.hasPermission('access://roles/manage')">
+    <b-form
+      @submit="add"
+      class="my-2"
+      v-if="$access.hasPermission('access://roles/manage')"
+    >
       <b-input-group>
         <b-input-group-prepend>
           <b-button variant="outline-primary" @click="add">
@@ -13,12 +16,17 @@
       </b-input-group>
     </b-form>
     <b-table
-      v-if="showResults"
       :items="items"
       :fields="fields"
       dark
-      responsive="md"
+      stacked="md"
+      :busy="working"
+      show-empty
+      :empty-text="$t('messages.no-items')"
     >
+      <template #table-busy>
+        <s-working />
+      </template>
       <template v-slot:cell(permissions)="data">
         <b-button
           variant="outline-primary"
@@ -50,13 +58,6 @@
     >
       <p>{{ $t("confirmation-remove.message") }}</p>
     </b-modal>
-    <b-alert
-      v-if="showResultsEmpty"
-      show
-      variant="info"
-      class="mt-2 text-center"
-      >{{ $t("messages.no-items") }}</b-alert
-    >
   </div>
 </template>
 
@@ -67,9 +68,10 @@ export default {
   name: "Roles",
   data() {
     return {
-      items: Array,
-      fields: Array,
+      items: [],
+      fields: [],
       selectedRole: Object,
+      working: false,
       form: {
         roleName: "",
       },
@@ -82,17 +84,6 @@ export default {
       },
     },
   },
-  computed: {
-    hasItems() {
-      return this.items && this.items.length > 0;
-    },
-    showResults() {
-      return this.hasItems && !this.working;
-    },
-    showResultsEmpty() {
-      return !this.hasItems && !this.working;
-    },
-  },
   methods: {
     permissions(data) {
       this.$router.push({ name: "role-permissions", params: { id: data.id } });
@@ -100,9 +91,16 @@ export default {
     refresh() {
       const self = this;
 
-      this.$api.get("roles").then(function (response) {
-        self.items = response.data;
-      });
+      this.working = true;
+
+      this.$api
+        .get("roles")
+        .then(function (response) {
+          self.items = response.data;
+        })
+        .finally(function () {
+          self.working = false;
+        });
     },
     add(evt) {
       const self = this;
