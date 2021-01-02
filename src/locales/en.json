@@ -2,8 +2,9 @@
     "change": "Change",
     "date-activated": "Date activated",
     "date-registered": "Date registered",
+    "identities": "Identities",
     "login": "Login",
-    "username": "Username",
+    "name": "Name",
     "password": "Password",
     "old-password": "Old password",
     "new-password": "New password",
@@ -15,7 +16,6 @@
     "roles": "Roles",
     "role-name": "Role Name",
     "submit": "Submit",
-    "users": "Users",
     "log-out": "Log out",
     "dashboard": "Dashboard",
     "permission": "Permission",
@@ -26,15 +26,15 @@
     "cancel": "Cancel",
     "request-sent": "The request has been submitted.  It may take a moment to process.",
     "role-permissions": "Permissions",
-    "last-administrator": "You cannot remove the administrator role as this user is the last administrator.",
+    "last-administrator": "You cannot remove the administrator role as this identity is the last administrator.",
     "confirmation-remove": {
         "title": "Confirmation",
         "message": "Are you sure that you want to remove the selected item?"
     },
-    "user-required": "No users have been registered.  You will be registered as an administrator.",
+    "identity-required": "No identities have been registered.  You will be registered as an administrator.",
     "exceptions": {
         "access-failure": "Could not initialize the `shuttle-access` module.  The back-end may not be available.",
-        "register": "Could not register user.  Exception: {0}"
+        "register": "Could perform registration.  Exception: {0}"
     },
     "working-message": "Please wait until the current operation completes and then try again.",
     "messages": {

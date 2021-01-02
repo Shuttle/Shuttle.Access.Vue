@@ -12,7 +12,7 @@
         <b-navbar-nav v-if="$access.hasPermission('access://roles/view')">
           <b-nav-item to="/roles">{{ $t("roles") }}</b-nav-item>
         </b-navbar-nav>
-        <b-navbar-nav v-if="$access.hasPermission('access://users/view')">
+        <b-navbar-nav v-if="$access.hasPermission('access://identity/view')">
           <b-nav-item to="/users">{{ $t("users") }}</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav v-if="$access.hasPermission('access://permissions/manage')">

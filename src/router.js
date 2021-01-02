@@ -42,7 +42,7 @@ const router = new Router({
             name: 'users',
             component: () => import(/* webpackChunkName: "users" */ './views/Users.vue'),
             meta: {
-                permission: 'access://users/view'
+                permission: 'access://identity/view'
             }
         },
         {
@@ -50,7 +50,7 @@ const router = new Router({
             name: 'user-roles',
             component: () => import(/* webpackChunkName: "user-roles" */ './views/UserRoles.vue'),
             meta: {
-                permission: 'access://users/manage'
+                permission: 'access://identity/manage'
             }
         },
         {

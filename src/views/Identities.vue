@@ -1,10 +1,10 @@
 <template>
   <div>
-    <s-title :text="$t('users')" />
+    <s-title :text="$t('identities')" />
     <b-form
       @submit="add"
       class="my-2"
-      v-if="$access.hasPermission('access://users/manage')"
+      v-if="$access.hasPermission('access://identity/manage')"
     >
       <b-input-group>
         <b-input-group-prepend>
@@ -12,7 +12,7 @@
             <font-awesome-icon icon="plus-square" />
           </b-button>
         </b-input-group-prepend>
-        <b-form-input v-model="form.username"></b-form-input>
+        <b-form-input v-model="form.name"></b-form-input>
       </b-input-group>
     </b-form>
     <b-table
@@ -33,7 +33,7 @@
           variant="outline-primary"
           @click="roles(data.item)"
           size="sm"
-          :disabled="!$access.hasPermission('access://users/manage')"
+          :disabled="!$access.hasPermission('access://identity/manage')"
         >
           <font-awesome-icon icon="user-circle" />
         </b-button>
@@ -43,8 +43,8 @@
           variant="outline-danger"
           v-b-modal.modal-confirmation
           size="sm"
-          @click="selectUser(data.item)"
-          :disabled="!$access.hasPermission('access://users/manage')"
+          @click="selectItem(data.item)"
+          :disabled="!$access.hasPermission('access://identity/manage')"
         >
           <font-awesome-icon icon="trash-alt" />
         </b-button>
@@ -68,28 +68,28 @@ import { required } from "vuelidate/lib/validators";
 import formatter from "../formatter";
 
 export default {
-  name: "Users",
+  name: "Identities",
   data() {
     return {
       items: [],
       fields: [],
-      selectedUser: Object,
+      selectedItem: Object,
       working: false,
       form: {
-        username: "",
+        name: "",
       },
     };
   },
   validations: {
     form: {
-      username: {
+      name: {
         required,
       },
     },
   },
   methods: {
     roles(data) {
-      this.$router.push({ name: "user-roles", params: { id: data.id } });
+      this.$router.push({ name: "identity-roles", params: { id: data.id } });
     },
     refresh() {
       const self = this;
@@ -97,7 +97,7 @@ export default {
       this.working = true;
 
       this.$api
-        .get("users")
+        .get("identities")
         .then(function (response) {
           if (!response || !response.data) {
             return;
@@ -119,8 +119,8 @@ export default {
       }
 
       this.$api
-        .post("users", {
-          username: this.form.username,
+        .post("identities", {
+          name: this.form.name,
         })
         .then(function () {
           self.$store.dispatch("addAlert", {
@@ -131,14 +131,14 @@ export default {
     remove() {
       const self = this;
 
-      this.$api.delete(`users/${this.selectedUser.id}`).then(function () {
+      this.$api.delete(`identities/${this.selectedItem.id}`).then(function () {
         self.$store.dispatch("addAlert", {
           message: self.$i18n.t("request-sent"),
         });
       });
     },
-    selectUser(item) {
-      this.selectedUser = item;
+    selectItem(item) {
+      this.selectedItem = item;
     },
   },
   beforeMount() {
@@ -156,8 +156,8 @@ export default {
         thClass: "button",
       },
       {
-        label: this.$i18n.t("username"),
-        key: "username",
+        label: this.$i18n.t("name"),
+        key: "name",
       },
       {
         label: this.$i18n.t("date-registered"),

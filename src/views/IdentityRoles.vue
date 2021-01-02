@@ -15,12 +15,12 @@
 
 <script>
 export default {
-  name: "UserRoles",
+  name: "IdentityRoles",
   data() {
     return {
-      userId: "",
-      username: "",
-      userRoles: [],
+      identityId: "",
+      name: "",
+      identityRoles: [],
       roles: [],
       fields: []
     };
@@ -28,8 +28,8 @@ export default {
   computed: {
     title() {
       return (
-        this.$i18n.t("users") +
-        (this.username ? " - " + this.username : "")
+        this.$i18n.t("identities") +
+        (this.name ? " - " + this.name : "")
       );
     },
     workingItems() {
@@ -56,8 +56,8 @@ export default {
       item.working = true;
 
       this.$api
-        .post("users/setrole", {
-          userId: this.userId,
+        .post("identities/setrole", {
+          identityId: this.identityId,
           roleId: item.roleId,
           active: item.active,
         })
@@ -101,7 +101,7 @@ export default {
       }
 
       var data = {
-        userId: self.userId,
+        identityId: self.identityId,
         roleIds: [],
       };
 
@@ -110,7 +110,7 @@ export default {
       });
 
       this.$api
-        .post("users/rolestatus", data)
+        .post("identities/rolestatus", data)
         .then(function (response) {
           Array.prototype.forEach.call(response.data, (item) => {
             const roleItem = self.getRoleItem(item.roleId);
@@ -132,7 +132,7 @@ export default {
     applyRoles() {
       var roles = [];
 
-      Array.prototype.forEach.call(this.userRoles, (item) => {
+      Array.prototype.forEach.call(this.identityRoles, (item) => {
         roles.push({
           roleId: item.id,
           roleName: item.name,
@@ -159,10 +159,10 @@ export default {
     refresh() {
       const self = this;
 
-      this.$api.get("users/" + this.userId).then(function (response) {
-        self.userId = response.data.id;
-        self.username = response.data.username;
-        self.userRoles = response.data.roles;
+      this.$api.get("identities/" + this.identityId).then(function (response) {
+        self.identityId = response.data.id;
+        self.name = response.data.name;
+        self.identityRoles = response.data.roles;
 
         self.$api.get("roles").then(function (response) {
           self.roles = response.data;
@@ -172,7 +172,7 @@ export default {
     },
   },
   beforeMount() {
-    this.userId = this.$route.params.id;
+    this.identityId = this.$route.params.id;
 
     this.fields = [
       {

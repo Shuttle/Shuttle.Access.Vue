@@ -33,7 +33,7 @@
           v-b-modal.modal-confirmation
           size="sm"
           @click="selectItem(data.item)"
-          :disabled="!$access.hasPermission('access://users/manage')"
+          :disabled="!$access.hasPermission('access://identity/manage')"
         >
           <font-awesome-icon icon="trash-alt" />
         </b-button>
