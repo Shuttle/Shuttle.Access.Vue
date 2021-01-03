@@ -8,7 +8,9 @@ export default class Alerts {
 
     add(alert) {
         if (!alert || !alert.message) {
-            return;
+            alert == alert || {};
+
+            alert.message = "(alert or alert.message is undefined)";
         }
         if (alert.key || alert.name) {
             this.remove(alert);
@@ -76,7 +78,7 @@ export default class Alerts {
                 message.expiryDate < date) ? undefined : message;
         });
 
-        setTimeout(function() {
+        setTimeout(function () {
             self._removeExpiredAlerts();
         }, 500);
     }

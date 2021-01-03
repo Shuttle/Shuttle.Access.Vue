@@ -9,11 +9,11 @@
         v-if="authenticated"
       ></b-navbar-toggle>
       <b-collapse id="nav-text-collapse" is-nav v-if="authenticated">
+        <b-navbar-nav v-if="$access.hasPermission('access://identity/view')">
+          <b-nav-item to="/identities">{{ $t("identities") }}</b-nav-item>
+        </b-navbar-nav>
         <b-navbar-nav v-if="$access.hasPermission('access://roles/view')">
           <b-nav-item to="/roles">{{ $t("roles") }}</b-nav-item>
-        </b-navbar-nav>
-        <b-navbar-nav v-if="$access.hasPermission('access://identity/view')">
-          <b-nav-item to="/users">{{ $t("users") }}</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav v-if="$access.hasPermission('access://permissions/manage')">
           <b-nav-item to="/permissions">{{ $t("permissions") }}</b-nav-item>

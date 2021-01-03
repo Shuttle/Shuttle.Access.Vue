@@ -38,7 +38,6 @@ body {
     background-color: #de5c00;
     color: #ddd;
     padding: .5rem;
-    border-right: solid 5px #823600!important;
     font-size: 2em;
 }
 
@@ -52,4 +51,13 @@ th.button {
 
 .b-table-busy-slot {
     text-align: center;
+}
+
+.s-alerts {
+    width: 100%;
+    padding-top: 15px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
 }

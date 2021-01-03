@@ -49,7 +49,7 @@ export default {
 
       if (item.working) {
         self.$store.dispatch("addAlert", {
-          message: self.$i18n.t("working-message"),
+          message: self.$i18n.t("message.working"),
           name: "working-message",
         });
         return;

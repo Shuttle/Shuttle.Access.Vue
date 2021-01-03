@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <sv-navigation />
-    <s-alerts :alerts="alerts" v-on:removed="removeAlert" class="m-2" />
+    <s-alerts :alerts="alerts" v-on:removed="removeAlert" />
     <div class="container-fluid">
       <div class="row row-offcanvas row-offcanvas-left">
         <div id="application-content" class="main col-sm-12 col-md-12">

@@ -46,9 +46,20 @@ export default new Vuex.Store({
             return access.login({
                 ...payload
             })
-                .then(() => {
-                    commit('AUTHENTICATED');
+                .then((response) => {
                     commit('STOP_WORKING');
+
+                    if (response.data.registered) {
+                        commit('AUTHENTICATED');
+
+                        return {
+                            authenticated: true
+                        }
+                    }
+
+                    return {
+                        authenticated: false
+                    }
                 })
                 .catch(error => {
                     commit('ADD_ALERT', {
@@ -57,6 +68,10 @@ export default new Vuex.Store({
                     });
 
                     commit('STOP_WORKING');
+
+                    return {
+                        authenticated: false
+                    }
                 })
         },
         logout({ commit }) {

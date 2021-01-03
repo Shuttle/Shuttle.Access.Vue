@@ -36,7 +36,7 @@ var redirect = true;
 
 access.initialize()
   .then(function () {
-    if (access.isUserRequired) {
+    if (access.isIdentityRequired) {
       redirect = false;
       router.push('register');
     }

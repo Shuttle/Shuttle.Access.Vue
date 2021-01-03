@@ -24,7 +24,6 @@
     "permissions-button": "permissions",
     "ok": "OK",
     "cancel": "Cancel",
-    "request-sent": "The request has been submitted.  It may take a moment to process.",
     "role-permissions": "Permissions",
     "last-administrator": "You cannot remove the administrator role as this identity is the last administrator.",
     "confirmation-remove": {
@@ -34,10 +33,11 @@
     "identity-required": "No identities have been registered.  You will be registered as an administrator.",
     "exceptions": {
         "access-failure": "Could not initialize the `shuttle-access` module.  The back-end may not be available.",
-        "register": "Could perform registration.  Exception: {0}"
+        "register": "Could not perform registration.  Exception: {0}"
     },
-    "working-message": "Please wait until the current operation completes and then try again.",
     "messages": {
-        "no-items": "There are no items to display."
+        "working": "Please wait until the current operation completes and then try again.",
+        "no-items": "There are no items to display.",
+        "request-sent": "The request has been submitted.  It may take a moment to process."
     }
 }

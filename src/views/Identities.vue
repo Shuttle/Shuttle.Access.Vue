@@ -124,7 +124,7 @@ export default {
         })
         .then(function () {
           self.$store.dispatch("addAlert", {
-            message: self.$i18n.t("request-sent"),
+            message: self.$i18n.t("messages.request-sent"),
           });
         });
     },
@@ -133,7 +133,7 @@ export default {
 
       this.$api.delete(`identities/${this.selectedItem.id}`).then(function () {
         self.$store.dispatch("addAlert", {
-          message: self.$i18n.t("request-sent"),
+          message: self.$i18n.t("messages.request-sent"),
         });
       });
     },

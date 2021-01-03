@@ -19,7 +19,7 @@
     "i18next": "^19.8.4",
     "i18next-xhr-backend": "^3.0.0",
     "moment": "^2.29.1",
-    "shuttle-access": "^2.0.6",
+    "shuttle-access": "^3.0.3",
     "shuttle-vue": "^1.0.5",
     "vue": "^2.6.12",
     "vue-class-component": "^7.2.6",

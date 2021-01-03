@@ -38,19 +38,19 @@ const router = new Router({
             }
         },
         {
-            path: '/users',
-            name: 'users',
-            component: () => import(/* webpackChunkName: "users" */ './views/Users.vue'),
+            path: '/identities',
+            name: 'identities',
+            component: () => import(/* webpackChunkName: "identities" */ './views/Identities.vue'),
             meta: {
                 permission: 'access://identity/view'
             }
         },
         {
-            path: '/users/:id/roles',
-            name: 'user-roles',
-            component: () => import(/* webpackChunkName: "user-roles" */ './views/UserRoles.vue'),
+            path: '/identities/:id/roles',
+            name: 'identity-roles',
+            component: () => import(/* webpackChunkName: "identity-roles" */ './views/IdentityRoles.vue'),
             meta: {
-                permission: 'access://identity/manage'
+                permission: 'access://identity/view'
             }
         },
         {
@@ -58,7 +58,7 @@ const router = new Router({
             name: 'permissions',
             component: () => import(/* webpackChunkName: "permissions" */ './views/Permissions.vue'),
             meta: {
-                permission: 'access://permissions/manage'
+                permission: 'access://permissions/view'
             }
         },
         {

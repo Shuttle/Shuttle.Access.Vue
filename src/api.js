@@ -20,7 +20,7 @@ api.interceptors.response.use((response) => response, (error) => {
     }
 
     store.dispatch('addAlert', {
-        message: error.response.data,
+        message: error.response.data || error.response.statusText || "(unknown communication/network error)",
         type: 'danger'
     });
 

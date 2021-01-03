@@ -6,13 +6,13 @@
         <s-title :text="$t('login')" />
         <b-form @submit="login" v-if="show" class="w-100">
           <b-form-group
-            id="input-group-username"
-            :label="$t('username')"
-            label-for="input-username"
+            id="input-group-name"
+            :label="$t('name')"
+            label-for="input-name"
           >
             <b-form-input
-              id="input-username"
-              v-model="form.username"
+              id="input-name"
+              v-model="form.name"
               required
               class="mb-2"
             ></b-form-input>
@@ -62,7 +62,7 @@ export default {
   data() {
     return {
       form: {
-        username: "",
+        name: "",
         password: "",
       },
       show: true,
@@ -70,7 +70,7 @@ export default {
   },
   validations: {
     form: {
-      username: {
+      name: {
         required,
       },
       password: {
@@ -93,11 +93,13 @@ export default {
 
       this.$store
         .dispatch("login", {
-          username: this.form.username,
+          identityName: this.form.name,
           password: this.form.password,
         })
-        .then(function () {
-          router.push("/dashboard");
+        .then(function (response) {
+          if (response.authenticated) {
+            router.push("/dashboard");
+          }
         });
     },
     register() {
