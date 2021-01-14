@@ -49,7 +49,7 @@ export default new Vuex.Store({
                 .then((response) => {
                     commit('STOP_WORKING');
 
-                    if (response.data.registered) {
+                    if (response.data.success) {
                         commit('AUTHENTICATED');
 
                         return {

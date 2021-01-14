@@ -160,6 +160,10 @@ export default {
         key: "name",
       },
       {
+        label: this.$i18n.t("generated-password"),
+        key: "generatedPassword",
+      },
+      {
         label: this.$i18n.t("date-registered"),
         key: "dateRegistered",
         formatter: formatter.date,
