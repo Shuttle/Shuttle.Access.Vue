@@ -121,6 +121,7 @@ export default {
       this.$api
         .post("identities", {
           name: this.form.name,
+          system: "system://access"
         })
         .then(function () {
           self.$store.dispatch("addAlert", {

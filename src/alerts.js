@@ -59,7 +59,8 @@ export default class Alerts {
             mode: mode,
             key: key,
             name: alert.name,
-            expiryDate: expiryDate
+            expiryDate: expiryDate,
+            expire: (alert.expire == undefined ? true : alert.expire)
         };
         this.messages.push(message);
         this._key = key;
@@ -74,7 +75,7 @@ export default class Alerts {
         }
 
         this.messages = this.messages.filter(function (message) {
-            return (message.expiryDate &&
+            return (message.expire && message.expiryDate &&
                 message.expiryDate < date) ? undefined : message;
         });
 
