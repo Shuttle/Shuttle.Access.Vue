@@ -16,6 +16,7 @@
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.10.1",
+    "dotenv": "^10.0.0",
     "i18next": "^19.9.2",
     "i18next-xhr-backend": "^3.0.0",
     "moment": "^2.29.1",

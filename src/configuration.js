@@ -1,6 +1,6 @@
 const configuration = {
-    url: process.env.VUE_APP_URL,
-    environment: process.env.VUE_APP_ENVIRONMENT,
+    url: null,
+    environment: (global.settings.NODE_ENV || 'development'),
 
     debugging(){
         return this.environment.toLowerCase() === 'development';
@@ -8,8 +8,14 @@ const configuration = {
 
     getApiUrl(path){
         return this.url + path;
-    }
+    },
 }
+
+if (!global.settings.API_URL) {
+    throw new Error("Configuration item 'settings.API_URL' has not been set.");
+}
+
+configuration.url = `${global.settings.API_URL}${global.settings.API_URL.endsWith("/") ? "" : "/"}`;
 
 if (Object.freeze){
     Object.freeze(configuration);
