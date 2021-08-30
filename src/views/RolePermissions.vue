@@ -4,10 +4,17 @@
     <b-table :items="permissions" :fields="fields" dark responsive="md">
       <template v-slot:cell(active)="data">
         <font-awesome-icon v-if="data.item.working" icon="hourglass" />
-        <b-form-checkbox v-else v-model="data.item.active" switch @input="toggle(data.item)" />
+        <b-form-checkbox
+          v-else
+          v-model="data.item.active"
+          switch
+          @input="toggle(data.item)"
+        />
       </template>
       <template v-slot:cell(permission)="data">
-        <span :class="!data.item.active ? 'text-muted' : ''">{{data.item.permission}}</span>
+        <span :class="!data.item.active ? 'text-muted' : ''">{{
+          data.item.permission
+        }}</span>
       </template>
     </b-table>
   </div>
@@ -25,6 +32,7 @@ export default {
       permissions: [],
       fields: [],
       working: false,
+      mounted: false,
     };
   },
   computed: {
@@ -116,6 +124,10 @@ export default {
           });
         })
         .then(function () {
+          if (!self.mounted) {
+            return;
+          }
+
           setTimeout(function () {
             self.getPermissionStatus.call(self);
           }, 1000);
@@ -168,7 +180,7 @@ export default {
       {
         label: "",
         key: "active",
-        class: "text-center"
+        class: "text-center",
       },
       {
         key: "permission",
@@ -178,7 +190,11 @@ export default {
     ];
   },
   mounted() {
+    this.mounted = true;
     this.refresh();
+  },
+  beforeDestroy() {
+    this.mounted = false;
   },
 };
 </script>
