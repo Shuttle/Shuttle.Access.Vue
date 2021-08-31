@@ -12,7 +12,7 @@ module.exports = {
         config
             .plugin('html')
             .tap(args => {
-                args[0].hash = true;
+                args[0].version = Date.now();
                 return args;
             });
     }
