@@ -1,62 +1,50 @@
-import Vue from 'vue';
-import store from './store'
-import App from './App.vue';
-import i18n from './i18n'
-import BootstrapVue from 'bootstrap-vue';
-import ShuttleVue from 'shuttle-vue';
-import Vuelidate from 'vuelidate';
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCircleNotch, faEye, faEyeSlash, faKey, faHourglass, faSignOutAlt, faUser, faPlusSquare, faShieldAlt, faSyncAlt, faTrashAlt, faUserCircle } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import router from './router'
-import access from './access';
-import api from './api';
+import { createApp } from "vue";
+import { createPinia } from "pinia";
+import './tailwind.css'
 
-library.add(faCircleNotch, faEye, faEyeSlash, faKey, faHourglass, faSignOutAlt, faUser, faPlusSquare, faShieldAlt, faSyncAlt, faTrashAlt, faUserCircle);
+import App from "./App.vue";
+import router from "./router";
+import { setupI18n, loadLocaleMessages } from "./i18n";
 
-Vue.component('font-awesome-icon', FontAwesomeIcon);
+import ShuttleVue from 'shuttle-vue3';
+import "shuttle-vue3/dist/shuttle-vue3.css";
+import "shuttle-vue3/dist/variables.css";
+import "@/assets/tailwind.css";
 
-Vue.use(BootstrapVue);
-Vue.use(ShuttleVue);
-Vue.use(Vuelidate);
+import { useAlertStore } from "@/stores/alert";
+import { useSessionStore } from "@/stores/session";
 
-Vue.config.productionTip = false;
+import TableEmpty from "@/components/TableEmpty.vue";
 
-Vue.prototype.$api = api;
-Vue.prototype.$access = access;
+const app = createApp(App);
 
-new Vue({
-  store,
-  router,
-  i18n,
-  render: h => h(App),
-}).$mount('#app');
+const i18n = setupI18n({
+    locale: import.meta.env.VITE_APP_I18N_LOCALE,
+    fallbackLocale: import.meta.env.VITE_APP_I18N_FALLBACK_LOCALE,
+});
 
-var redirect = true;
+await loadLocaleMessages(i18n, "en");
 
-access.initialize()
-  .then(function () {
-    if (access.isIdentityRequired) {
-      redirect = false;
-      router.push('register');
-    }
-    else {
-      if (access.loginStatus == 'logged-in') {
-        store.commit('AUTHENTICATED');
-      } else {
-        redirect = false;
-        router.push('login');
-      }
-    }
-  })
-  .catch(function () {
-    store.dispatch('addAlert', {
-      message: i18n.t('exceptions.access-failure'),
-      type: 'danger'
+app.use(createPinia());
+app.use(i18n);
+app.use(router);
+app.use(ShuttleVue);
+
+app.component("TableEmpty", TableEmpty);
+
+const alertStore = useAlertStore();
+const sessionStore = useSessionStore();
+
+await sessionStore.initialize()
+    .catch(error => {
+        alertStore.add({
+            message: i18n.global.t("exceptions.session-initialize", { error: error.toString() }),
+            variant: "danger"
+        })
     });
-  })
-  .finally(function () {
-    if (redirect) {
-      router.push({ path: window.location.pathname });
-    }
-  });
+
+if (window.location.pathname === "/") {
+    router.push({ path: sessionStore.authenticated ? "/dashboard" : "/signin" });
+}
+
+app.mount("#app");

@@ -1,13 +1,15 @@
 import axios from 'axios';
-import store from './store';
+import { useAlertStore } from '@/stores/alert';
+import { useSessionStore } from '@/stores/session';
 import configuration from './configuration';
-import access from './access';
 import router from './router';
 
-var api = axios.create({ baseURL: configuration.url });
+const api = axios.create({ baseURL: configuration.url });
+const alertStore = useAlertStore();
+const sessionStore = useSessionStore();
 
 api.interceptors.request.use(function (config) {
-    config.headers['access-sessiontoken'] = access.token;
+    config.headers['access-sessiontoken'] = sessionStore.token;
 
     return config;
 });
@@ -19,12 +21,12 @@ api.interceptors.response.use((response) => response, (error) => {
         return error;
     }
 
-    store.dispatch('addAlert', {
+    alertStore.add({
         message: error.response.data || error.response.statusText || "(unknown communication/network error)",
-        type: 'danger'
+        variant: "danger"
     });
 
-    return error;
+    return Promise.reject(error);
 });
 
 export default api;

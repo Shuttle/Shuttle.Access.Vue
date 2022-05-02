@@ -1,6 +1,6 @@
 const configuration = {
     url: null,
-    environment: (global.settings.NODE_ENV || 'development'),
+    environment: (import.meta.env.VITE_NODE_ENV || 'development'),
 
     debugging(){
         return this.environment.toLowerCase() === 'development';
@@ -11,11 +11,11 @@ const configuration = {
     },
 }
 
-if (!global.settings.API_URL) {
-    throw new Error("Configuration item 'settings.API_URL' has not been set.");
+if (!import.meta.env.VITE_API_URL) {
+    throw new Error("Configuration item 'import.meta.env.VITE_API_URL' has not been set.");
 }
 
-configuration.url = `${global.settings.API_URL}${global.settings.API_URL.endsWith("/") ? "" : "/"}`;
+configuration.url = `${import.meta.env.VITE_API_URL}${import.meta.env.VITE_API_URL.endsWith("/") ? "" : "/"}`;
 
 if (Object.freeze){
     Object.freeze(configuration);

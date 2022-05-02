@@ -1,11 +1,6 @@
 <template>
-  <div>
-    <s-title :text="$t('dashboard')" />
-  </div>
+    <Title>{{ $t("dashboard") }}</Title>
 </template>
 
-<script>
-export default {
-  name: 'Dashboard'
-}
+<script setup>
 </script>
