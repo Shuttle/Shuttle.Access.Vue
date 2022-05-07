@@ -32,3 +32,13 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* route transitions */
+.route-enter-from,
+.route-leave-to {
+    opacity: 0;
+}
+
+.route-enter-active,
+.route-leave-active {
+    transition: all 0.3s ease;
+}

@@ -1,15 +1,17 @@
 <template>
-    <Form size="sm" @submit.prevent="submit()">
-        <Title>{{ $t("identity") }}</Title>
-        <Input v-model="state.identityName" :label="$t('identity-name')" class="mb-2" :icon-start="UserIcon"
-            autocomplete="username" :alert="validation.validate('identityName')" />
-        <Input v-model="state.password" :label="$t('password')" :icon-start="ShieldExclamationIcon"
-            :icon-end="getPasswordIcon()" icon-end-clickable @icon-end-click="togglePasswordIcon"
-            :type="getPasswordType()" autocomplete="current-password" :alert="validation.validate('password')" />
-        <div class="flex flex-row justify-end mt-4">
-            <Button @click="submit">{{ $t("register") }}</Button>
-        </div>
-    </Form>
+    <div>
+        <Form size="sm" @submit.prevent="submit()">
+            <Title>{{ $t("identity") }}</Title>
+            <Input v-model="state.identityName" :label="$t('identity-name')" class="mb-2" :icon-start="UserIcon"
+                autocomplete="username" :alert="validation.validate('identityName')" />
+            <Input v-model="state.password" :label="$t('password')" :icon-start="ShieldExclamationIcon"
+                :icon-end="getPasswordIcon()" icon-end-clickable @icon-end-click="togglePasswordIcon"
+                :type="getPasswordType()" autocomplete="current-password" :alert="validation.validate('password')" />
+            <div class="flex flex-row justify-end mt-4">
+                <Button @click="submit">{{ $t("register") }}</Button>
+            </div>
+        </Form>
+    </div>
 </template>
 
 <script setup>
@@ -18,11 +20,8 @@ import { computed, reactive, ref } from "vue";
 import { required } from '@vuelidate/validators';
 import { useValidation } from "@/composables/useValidation"
 import { useAlertStore } from "@/stores/alert";
-import { useI18n } from "vue-i18n";
 import router from "@/router";
 import api from "@/api";
-
-const { t } = useI18n({ useScope: 'global' });
 
 const state = reactive({
     identityName: "",
@@ -67,11 +66,9 @@ const submit = async () => {
             system: "system://access"
         })
         .then(function () {
-            useAlertStore().add({
-                message: t("messages.request-sent"),
-            });
+            useAlertStore().requestSent();
 
-            router.push({ name: "identities" });
+            router.push({ path: "/identities" });
         });
 }
 </script>

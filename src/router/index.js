@@ -2,6 +2,10 @@ import { createRouter, createWebHistory } from "vue-router";
 import { useSessionStore } from "@/stores/session";
 import { useAlertStore } from "@/stores/alert";
 
+export let messages = {
+    insufficientPermission: "You do not have permission to access the requested view.  Please contact your system administrator if you require access.",
+}
+
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
@@ -26,6 +30,13 @@ const router = createRouter({
             component: () => import('../views/Identity.vue')
         },
         {
+            path: '/identities/:id/roles',
+            name: 'identity-roles',
+            component: () => import('../views/IdentityRoles.vue'),
+            meta: {
+                permission: 'access://identity/view'
+            }
+        }, {
             path: "/roles",
             name: "roles",
             component: () => import('../views/Roles.vue')
@@ -38,12 +49,16 @@ const router = createRouter({
     ],
 });
 
-router.beforeEach(async (to, from) => {
+router.beforeEach(async (to, from, next) => {
     const sessionStore = useSessionStore();
+
+    if (!sessionStore.initialized) {
+        return next();
+    }
 
     if (!!to.meta.permission && !sessionStore.hasPermission(to.meta.permission)) {
         useAlertStore().add({
-            message: $t("exceptions.insufficient-permission"),
+            message: messages.insufficientPermission,
             variant: "info"
         })
 
@@ -51,8 +66,10 @@ router.beforeEach(async (to, from) => {
     }
 
     if (!!to.meta.authenticated && !sessionStore.authenticated && to.name !== 'login') {
-        return { name: 'login' }
+        return { name: "login" }
     }
+
+    return next();
 })
 
 export default router;

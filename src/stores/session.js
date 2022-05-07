@@ -4,9 +4,9 @@ import configuration from "@/configuration";
 import guard from "shuttle-guard";
 
 export let messages = {
-    missingCredentials: 'Incomplete credentials specified.',
-    signInFailure: 'Invalid credentials.',
-    invalidSession: 'Invalid session.'
+    missingCredentials: "Incomplete credentials specified.",
+    signInFailure: "Invalid credentials.",
+    invalidSession: "Invalid session."
 };
 
 export const useSessionStore = defineStore("session", {
@@ -23,6 +23,10 @@ export const useSessionStore = defineStore("session", {
     actions: {
         async initialize() {
             var self = this;
+
+            if (this.initialized) {
+                return;
+            }
 
             return axios.get(configuration.getApiUrl('permissions/anonymous'))
                 .then(function (response) {
