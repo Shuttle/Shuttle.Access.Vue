@@ -22,12 +22,18 @@ const router = createRouter({
         {
             path: "/identities",
             name: "identities",
-            component: () => import('../views/Identities.vue')
+            component: () => import('../views/Identities.vue'),
+            meta: {
+                permission: 'access://identity/view'
+            }
         },
         {
             path: "/identity",
             name: "identity",
-            component: () => import('../views/Identity.vue')
+            component: () => import('../views/Identity.vue'),
+            meta: {
+                permission: 'access://identity/manage'
+            }
         },
         {
             path: '/identities/:id/roles',
@@ -36,15 +42,46 @@ const router = createRouter({
             meta: {
                 permission: 'access://identity/view'
             }
-        }, {
+        }, 
+        {
             path: "/roles",
             name: "roles",
-            component: () => import('../views/Roles.vue')
+            component: () => import('../views/Roles.vue'),
+            meta: {
+                permission: 'access://roles/view'
+            }
+        },
+        {
+            path: "/role/:id?",
+            name: "role",
+            component: () => import('../views/Role.vue'),
+            meta: {
+                permission: 'access://roles/manage'
+            }
+        },
+        {
+            path: "/role/:id/change-name",
+            name: "role-change-name",
+            component: () => import('../views/RoleChangeName.vue'),
+            meta: {
+                permission: 'access://roles/manage'
+            }
+        },
+        {
+            path: '/roles/:id/permissions',
+            name: 'role-permissions',
+            component: () => import('../views/RolePermissions.vue'),
+            meta: {
+                permission: 'access://roles/manage'
+            }
         },
         {
             path: "/permissions",
             name: "permissions",
-            component: () => import('../views/Permissions.vue')
+            component: () => import('../views/Permissions.vue'),
+            meta: {
+                permission: 'access://permissions/view'
+            }
         },
     ],
 });

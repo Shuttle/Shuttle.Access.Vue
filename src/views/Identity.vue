@@ -8,7 +8,7 @@
                 :icon-end="getPasswordIcon()" icon-end-clickable @icon-end-click="togglePasswordIcon"
                 :type="getPasswordType()" autocomplete="current-password" :alert="validation.validate('password')" />
             <div class="flex flex-row justify-end mt-4">
-                <Button @click="submit">{{ $t("register") }}</Button>
+                <Button @click="submit">{{ $t("save") }}</Button>
             </div>
         </Form>
     </div>
@@ -20,7 +20,6 @@ import { computed, reactive, ref } from "vue";
 import { required } from '@vuelidate/validators';
 import { useValidation } from "@/composables/useValidation"
 import { useAlertStore } from "@/stores/alert";
-import router from "@/router";
 import api from "@/api";
 
 const state = reactive({
@@ -67,8 +66,6 @@ const submit = async () => {
         })
         .then(function () {
             useAlertStore().requestSent();
-
-            router.push({ path: "/identities" });
         });
 }
 </script>

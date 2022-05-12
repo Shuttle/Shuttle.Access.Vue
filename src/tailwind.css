@@ -4,7 +4,7 @@
 
 @layer components {
     .sv-title {
-        @apply font-semibold text-[color:rgb(var(--sv-text-primary))] text-2xl border-b-[color:rgb(var(--sv-border-primary))] border-b pb-2 mb-4;
+        @apply font-semibold border-0 mb-2 p-0;
     }
     
     .sv-strip {

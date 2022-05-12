@@ -43,14 +43,10 @@
     --tw-backdrop-sepia:  
 }
 .sv-title {
-    margin-bottom: 1rem;
-    border-bottom-width: 1px;
-    border-bottom-color: rgb(var(--sv-border-primary));
-    padding-bottom: 0.5rem;
-    font-size: 1.5rem;
-    line-height: 2rem;
-    font-weight: 600;
-    color: rgb(var(--sv-text-primary))
+    margin-bottom: 0.5rem;
+    border-width: 0px;
+    padding: 0px;
+    font-weight: 600
 }
 .sv-strip {
     margin-bottom: 1rem
@@ -67,15 +63,22 @@
 .z-50 {
     z-index: 50
 }
-.m-2 {
-    margin: 0.5rem
+.mx-4 {
+    margin-left: 1rem;
+    margin-right: 1rem
 }
 .mx-2 {
     margin-left: 0.5rem;
     margin-right: 0.5rem
 }
+.mt-2 {
+    margin-top: 0.5rem
+}
 .mb-2 {
     margin-bottom: 0.5rem
+}
+.mt-4 {
+    margin-top: 1rem
 }
 .mr-2 {
     margin-right: 0.5rem
@@ -83,20 +86,17 @@
 .mt-\[2px\] {
     margin-top: 2px
 }
-.mt-4 {
-    margin-top: 1rem
-}
 .flex {
     display: flex
 }
 .hidden {
     display: none
 }
-.w-full {
-    width: 100%
-}
 .w-20 {
     width: 5rem
+}
+.w-full {
+    width: 100%
 }
 .w-1 {
     width: 0.25rem
@@ -152,11 +152,22 @@
     --tw-text-opacity: 1;
     color: rgb(249 115 22 / var(--tw-text-opacity))
 }
+.text-gray-500 {
+    --tw-text-opacity: 1;
+    color: rgb(107 114 128 / var(--tw-text-opacity))
+}
 .outline {
     outline-style: solid
 }
 .filter {
     filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)
+}
+.transition {
+    transition-property: color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms
 }
 .dark .dark\:border-gray-700 {
     --tw-border-opacity: 1;

@@ -11,7 +11,7 @@ var confirmationStore = useConfirmationStore();
 <template>
     <Navbar />
     <Alerts v-if="alertStore.alerts.length" :alerts="alertStore.alerts"
-        :sv-class="{ 'sv-alerts': 'm-2 pt-2', 'sv-alert': 'mb-2' }" @remove="alertStore.remove" />
+        :sv-class="{ 'sv-alerts': 'mx-4 mt-2 pt-2', 'sv-alert': 'mb-2' }" @remove="alertStore.remove" />
     <div class="p-4">
         <RouterView v-slot="{ Component, route }">
             <transition name="route" mode="out-in">

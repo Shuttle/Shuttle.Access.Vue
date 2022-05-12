@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Title>{{ `${t("roles")} - ${name}` }}</Title>
+        <Title>{{ `${t("permissions")} - ${name}` }}</Title>
         <Table :fields="fields" :items="items" :busy="busy" striped>
             <template #item(active)="data">
                 <div v-if="data.item.working" class="flex flex-row items-center justify-center">
@@ -34,8 +34,8 @@ const alertStore = useAlertStore();
 
 const id = ref(useRoute().params.id);
 const name = ref('');
-const identityRoles = ref([]);
-const roles = ref([]);
+const rolePermissions = ref([]);
+const permissions = ref([]);
 const busy = ref();
 
 let startDateRegistered;
@@ -47,30 +47,28 @@ const fields = [
         thClass: "w-1",
     },
     {
-        text: t("role-name"),
-        name: "roleName",
+        text: t("permission"),
+        name: "permission",
     }
 ];
 
 const items = computed(() => {
     var result = [];
 
-    Array.prototype.forEach.call(identityRoles.value, (item) => {
+    Array.prototype.forEach.call(rolePermissions.value, (item) => {
         result.push(reactive({
-            roleId: item.id,
-            roleName: item.name,
+            permission: item,
             active: true,
             working: false,
         }));
     });
     Array.prototype.forEach.call(
-        roles.value.filter((item) => {
-            return !result.some((r) => r.roleId == item.id);
+        permissions.value.filter((item) => {
+            return !result.some((r) => r.permission == item);
         }),
         (item) => {
             result.push(reactive({
-                roleId: item.id,
-                roleName: item.roleName,
+                permission: item,
                 active: false,
                 working: false,
             }));
@@ -81,12 +79,12 @@ const items = computed(() => {
 });
 
 const refresh = () => {
-    api.get(`identities/${id.value}`).then((response) => {
-        name.value = response.data.name;
-        identityRoles.value = response.data.roles;
+    api.get(`roles/${id.value}`).then((response) => {
+        name.value = response.data.roleName;
+        rolePermissions.value = response.data.permissions;
 
-        api.get("roles").then((response) => {
-            roles.value = response.data;
+        api.get("permissions").then((response) => {
+            permissions.value = response.data;
         });
     });
 };
@@ -101,7 +99,7 @@ const workingCount = computed(() => {
     return workingItems.value.length;
 });
 
-const getRoleItem = (roleId) => {
+const getPermissionItem = (permission) => {
     var result;
 
     Array.prototype.forEach.call(items.value, (item) => {
@@ -109,7 +107,7 @@ const getRoleItem = (roleId) => {
             return;
         }
 
-        if (item.roleId === roleId) {
+        if (item.permission === permission) {
             result = item;
         }
     });
@@ -117,25 +115,25 @@ const getRoleItem = (roleId) => {
     return result;
 };
 
-const getRoleStatus = () => {
+const getPermissionStatus = () => {
     if (workingCount.value === 0) {
         return;
     }
 
     api
-        .post(`identities/${id.value}/role-status`, {
-            values: workingItems.value.map(item => item.roleId)
+        .post(`roles/${id.value}/permission-status`, {
+            values: workingItems.value.map(item => item.permission)
         })
         .then(function (response) {
             Array.prototype.forEach.call(response.data, (status) => {
-                const item = getRoleItem(status.roleId);
+                const item = getPermissionItem(status.permission);
                 
                 item.working = status.active;
             });
         })
         .then(() => {
             setTimeout(() => {
-                getRoleStatus();
+                getPermissionStatus();
             }, 1000);
         });
 };
@@ -153,11 +151,12 @@ const toggle = (item) => {
     item.working = true;
 
     api
-        .patch(`identities/${id.value}/roles/${item.roleId}`, {
+        .patch(`roles/${id.value}/permissions`, {
+            permission: item.permission,
             active: item.active,
         });
 
-    getRoleStatus();
+    getPermissionStatus();
 }
 
 onMounted(() => {
