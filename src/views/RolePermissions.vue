@@ -8,8 +8,8 @@
                 </div>
                 <Checkbox v-else v-model="data.item.active" @click="toggle(data.item)" />
             </template>
-            <template #item(roleName)="data">
-                <span :class="!data.item.active ? 'text-gray-500' : ''">{{ data.item.roleName }}</span>
+            <template #item(permission)="data">
+                <span :class="!data.item.active ? 'text-gray-500' : ''">{{ data.item.permission }}</span>
             </template>
             <template #busy>
                 <Busy />

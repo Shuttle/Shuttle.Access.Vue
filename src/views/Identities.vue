@@ -9,6 +9,9 @@
             <template #item(roles)="data">
                 <Button :icon="UserGroupIcon" size="xs" outline @click="roles(data.item)"></Button>
             </template>
+            <template #item(edit)="data">
+                <Button :icon="PencilIcon" size="xs" outline @click="edit(data.item)"></Button>
+            </template>
             <template #item(remove)="data">
                 <Button :icon="TrashIcon" size="xs" outline variant="danger"
                     @click="confirmationStore.show(data.item, remove)"></Button>
@@ -27,7 +30,7 @@
 import api from "@/api";
 import { onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { PlusIcon, RefreshIcon, TrashIcon, UserGroupIcon } from "@heroicons/vue/outline";
+import { PencilIcon, PlusIcon, RefreshIcon, TrashIcon, UserGroupIcon } from "@heroicons/vue/outline";
 import { useDateFormatter } from "@/composables/useDateFormatter";
 import { useRouter } from "vue-router";
 import { useAlertStore } from "@/stores/alert";
@@ -43,6 +46,11 @@ const fields = [
     {
         text: "",
         name: "roles",
+        thClass: "w-1",
+    },
+    {
+        text: "",
+        name: "edit",
         thClass: "w-1",
     },
     {
@@ -111,6 +119,10 @@ const add = () => {
 
 const roles = (item) => {
     router.push({ name: "identity-roles", params: { id: item.id } });
+}
+
+const edit = (item) => {
+    router.push({ name: "identity-change-name", params: { id: item.id } });
 }
 
 onMounted(() => {

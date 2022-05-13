@@ -36,6 +36,14 @@ const router = createRouter({
             }
         },
         {
+            path: "/identity/:id/change-name",
+            name: "identity-change-name",
+            component: () => import('../views/IdentityChangeName.vue'),
+            meta: {
+                permission: 'access://identities/manage'
+            }
+        },
+        {
             path: '/identities/:id/roles',
             name: 'identity-roles',
             component: () => import('../views/IdentityRoles.vue'),
@@ -52,7 +60,7 @@ const router = createRouter({
             }
         },
         {
-            path: "/role/:id?",
+            path: "/role",
             name: "role",
             component: () => import('../views/Role.vue'),
             meta: {
