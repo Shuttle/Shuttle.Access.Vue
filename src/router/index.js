@@ -36,9 +36,9 @@ const router = createRouter({
             }
         },
         {
-            path: "/identity/:id/change-name",
-            name: "identity-change-name",
-            component: () => import('../views/IdentityChangeName.vue'),
+            path: "/identity/:id/rename",
+            name: "identity--rename",
+            component: () => import('../views/IdentityRename.vue'),
             meta: {
                 permission: 'access://identities/manage'
             }
@@ -68,17 +68,9 @@ const router = createRouter({
             }
         },
         {
-            path: "/role/:id/change-name",
-            name: "role-change-name",
-            component: () => import('../views/RoleChangeName.vue'),
-            meta: {
-                permission: 'access://roles/manage'
-            }
-        },
-        {
-            path: '/roles/:id/permissions',
-            name: 'role-permissions',
-            component: () => import('../views/RolePermissions.vue'),
+            path: "/role/:id/rename",
+            name: "role-rename",
+            component: () => import('../views/RoleRename.vue'),
             meta: {
                 permission: 'access://roles/manage'
             }
@@ -89,6 +81,14 @@ const router = createRouter({
             component: () => import('../views/Permissions.vue'),
             meta: {
                 permission: 'access://permissions/view'
+            }
+        },
+        {
+            path: "/permission",
+            name: "permission",
+            component: () => import('../views/Permission.vue'),
+            meta: {
+                permission: 'access://permissions/manage'
             }
         },
     ],

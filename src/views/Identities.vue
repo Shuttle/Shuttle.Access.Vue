@@ -5,7 +5,7 @@
             <Button :icon="RefreshIcon" size="sm" @click="refresh"></Button>
             <Button :icon="PlusIcon" size="sm" @click="add"></Button>
         </Strip>
-        <Table :fields="fields" :items="items" :busy="busy">
+        <Table :fields="fields" :items="items" :busy="busy" striped>
             <template #item(roles)="data">
                 <Button :icon="UserGroupIcon" size="xs" outline @click="roles(data.item)"></Button>
             </template>
@@ -122,7 +122,7 @@ const roles = (item) => {
 }
 
 const edit = (item) => {
-    router.push({ name: "identity-change-name", params: { id: item.id } });
+    router.push({ name: "identity-rename", params: { id: item.id } });
 }
 
 onMounted(() => {

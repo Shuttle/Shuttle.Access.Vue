@@ -5,7 +5,7 @@
             <Button :icon="RefreshIcon" size="sm" @click="refresh"></Button>
             <Button :icon="PlusIcon" size="sm" @click="add"></Button>
         </Strip>
-        <Table :fields="fields" :items="items" :busy="busy">
+        <Table :fields="fields" :items="items" :busy="busy" striped>
             <template #item(permissions)="data">
                 <Button :icon="ShieldCheckIcon" size="xs" outline @click="permissions(data.item)"></Button>
             </template>
@@ -103,7 +103,7 @@ const permissions = (item) => {
 }
 
 const edit = (item) => {
-    router.push({ name: "role-change-name", params: { id: item.id } });
+    router.push({ name: "role-rename", params: { id: item.id } });
 }
 
 onMounted(() => {

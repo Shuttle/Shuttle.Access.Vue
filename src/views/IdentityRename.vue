@@ -1,7 +1,7 @@
 <template>
     <div>
         <Form size="sm" @submit.prevent="submit()">
-            <Title>{{ $t("role") }}</Title>
+            <Title>{{ $t("identity") }}</Title>
             <Input v-model="state.current" :label="$t('name')" class="mb-2" readonly />
             <Input v-model="state.name" :label="$t('new-value')" class="mb-2" :alert="validation.validate('name')" />
             <div class="flex flex-row justify-end mt-4">
@@ -20,9 +20,6 @@ import { useAlertStore } from "@/stores/alert";
 import api from "@/api";
 
 const id = ref(useRoute().params.id);
-const hasRole = computed(() => {
-    return !!id.value;
-});
 
 const same = computed(() => {
     return state.current === state.name;
@@ -51,7 +48,7 @@ const submit = async () => {
     }
 
     api
-        .patch(`roles/${id.value}/name`, {
+        .patch(`identities/${id.value}/name`, {
             name: state.name,
         })
         .then(function () {
@@ -64,10 +61,10 @@ onMounted(() => {
         return;
     }
 
-    api.get(`roles/${id.value}`)
+    api.get(`identities/${id.value}`)
         .then(item => {
-            state.current = item.data.roleName;
-            state.name = item.data.roleName;
+            state.current = item.data.name;
+            state.name = item.data.name;
         });
 })
 </script>
