@@ -28,6 +28,7 @@ import { PlusIcon, RefreshIcon, TrashIcon } from "@heroicons/vue/outline";
 import { useRouter } from "vue-router";
 import { useAlertStore } from "@/stores/alert";
 import { useConfirmationStore } from "@/stores/confirmation";
+import { useSecureTableFields } from "@/composables/useSecureTableFields";
 
 var confirmationStore = useConfirmationStore();
 
@@ -35,17 +36,18 @@ const { t } = useI18n({ useScope: 'global' });
 const router = useRouter();
 const busy = ref();
 
-const fields = [
+const fields = useSecureTableFields([
     {
         text: "",
         name: "remove",
         thClass: "w-1",
+        permission: "access://pemission/manage"
     },
     {
         text: t("permission"),
         name: "permission",
     },
-];
+]);
 
 const items = ref([]);
 

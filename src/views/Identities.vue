@@ -32,6 +32,7 @@ import { onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { PencilIcon, PlusIcon, RefreshIcon, TrashIcon, UserGroupIcon } from "@heroicons/vue/outline";
 import { useDateFormatter } from "@/composables/useDateFormatter";
+import { useSecureTableFields } from "@/composables/useSecureTableFields";
 import { useRouter } from "vue-router";
 import { useAlertStore } from "@/stores/alert";
 import { useConfirmationStore } from "@/stores/confirmation";
@@ -42,21 +43,24 @@ const { t } = useI18n({ useScope: 'global' });
 const router = useRouter();
 const busy = ref();
 
-const fields = [
+const fields = useSecureTableFields([
     {
         text: "",
         name: "roles",
         thClass: "w-1",
+        permission: "access://identity/manage"
     },
     {
         text: "",
         name: "edit",
         thClass: "w-1",
+        permission: "access://identity/manage"
     },
     {
         text: "",
         name: "remove",
         thClass: "w-1",
+        permission: "access://identity/manage"
     },
     {
         text: t("name"),
@@ -80,7 +84,7 @@ const fields = [
         name: "dateActivated",
         formatter: useDateFormatter,
     },
-];
+]);
 
 const items = ref([]);
 

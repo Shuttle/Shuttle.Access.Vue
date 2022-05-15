@@ -14,7 +14,7 @@ var Permissions = {
         Dashboard: "access://dashboard/view",
         Role: "access://role/view",
         Identity: "access://identity/view",
-        Permission: "access://permissions/view",
+        Permission: "access://permission/view",
         Sessions: "access://sessions/view",
     },
     Activate: {

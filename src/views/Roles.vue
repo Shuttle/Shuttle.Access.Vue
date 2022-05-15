@@ -34,6 +34,7 @@ import { PencilIcon, PlusIcon, RefreshIcon, TrashIcon, ShieldCheckIcon } from "@
 import { useRouter } from "vue-router";
 import { useAlertStore } from "@/stores/alert";
 import { useConfirmationStore } from "@/stores/confirmation";
+import { useSecureTableFields } from "@/composables/useSecureTableFields";
 
 var confirmationStore = useConfirmationStore();
 
@@ -41,27 +42,30 @@ const { t } = useI18n({ useScope: 'global' });
 const router = useRouter();
 const busy = ref();
 
-const fields = [
+const fields = useSecureTableFields([
     {
         text: "",
         name: "permissions",
         thClass: "w-1",
+        permission: "access://role/manage"
     },
     {
         text: "",
         name: "edit",
         thClass: "w-1",
+        permission: "access://role/manage"
     },
     {
         text: "",
         name: "remove",
         thClass: "w-1",
+        permission: "access://role/manage"
     },
     {
         text: t("role-name"),
         name: "roleName",
     },
-];
+]);
 
 const items = ref([]);
 

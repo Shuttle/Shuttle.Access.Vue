@@ -40,7 +40,7 @@ const router = createRouter({
             name: "identity--rename",
             component: () => import('../views/IdentityRename.vue'),
             meta: {
-                permission: 'access://identities/manage'
+                permission: 'access://identity/manage'
             }
         },
         {
@@ -56,7 +56,7 @@ const router = createRouter({
             name: "roles",
             component: () => import('../views/Roles.vue'),
             meta: {
-                permission: 'access://roles/view'
+                permission: 'access://role/view'
             }
         },
         {
@@ -64,7 +64,7 @@ const router = createRouter({
             name: "role",
             component: () => import('../views/Role.vue'),
             meta: {
-                permission: 'access://roles/manage'
+                permission: 'access://role/manage'
             }
         },
         {
@@ -72,15 +72,23 @@ const router = createRouter({
             name: "role-rename",
             component: () => import('../views/RoleRename.vue'),
             meta: {
-                permission: 'access://roles/manage'
+                permission: 'access://role/manage'
             }
         },
+        {
+            path: '/roles/:id/permissions',
+            name: 'role-permissions',
+            component: () => import('../views/RolePermissions.vue'),
+            meta: {
+                permission: 'access://role/view'
+            }
+        }, 
         {
             path: "/permissions",
             name: "permissions",
             component: () => import('../views/Permissions.vue'),
             meta: {
-                permission: 'access://permissions/view'
+                permission: 'access://permission/view'
             }
         },
         {
@@ -88,7 +96,7 @@ const router = createRouter({
             name: "permission",
             component: () => import('../views/Permission.vue'),
             meta: {
-                permission: 'access://permissions/manage'
+                permission: 'access://permission/manage'
             }
         },
     ],
