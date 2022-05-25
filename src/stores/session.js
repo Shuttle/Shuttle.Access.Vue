@@ -14,7 +14,6 @@ export const useSessionStore = defineStore("session", {
         return {
             authenticated: false,
             initialized: false,
-            isIdentityRequired: false,
             identityName: "",
             token: "",
             permissions: []
@@ -28,39 +27,19 @@ export const useSessionStore = defineStore("session", {
                 return;
             }
 
-            return axios.get(configuration.getApiUrl('permissions/anonymous'))
-                .then(function (response) {
-                    guard.againstUndefined(response, 'response');
-                    guard.againstUndefined(response.data, 'response.data');
-                    guard.againstUndefined(response.data.permissions, 'response.data.permissions');
-                    guard.againstUndefined(response.data.isIdentityRequired, 'response.data.isIdentityRequired');
+            const identityName = localStorage.getItem("shuttle-access.identityName");
+            const token = localStorage.getItem("shuttle-access.token");
 
-                    let identityName = localStorage.getItem("shuttle-access.identityName");
-                    let token = localStorage.getItem("shuttle-access.token");
+            if (!!identityName && !!token) {
+                return self.signIn({ identityName: identityName, token: token })
+                    .then(function (response) {
+                        self.initialized = true;
 
-                    if (response.data.isIdentityRequired) {
-                        self.isIdentityRequired = true;
-                        identityName = undefined;
-                        token = undefined;
-                    }
-
-                    response.data.permissions.forEach(function (item) {
-                        self.addPermission('anonymous', item);
+                        return response;
                     });
+            }
 
-                    if (!!identityName && !!token) {
-                        return self.signIn({ identityName: identityName, token: token })
-                            .then(function (response) {
-                                self.initialized = true;
-
-                                return response;
-                            });
-                    }
-
-                    self.initialized = true;
-
-                    return response.data;
-                });
+            return Promise.resolve();
         },
         addPermission(type, permission) {
             if (this.hasPermission(permission)) {

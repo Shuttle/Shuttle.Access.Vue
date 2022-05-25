@@ -3,19 +3,8 @@ import useVuelidate from '@vuelidate/core';
 export function useValidation(rules, state) {
     const v$ = useVuelidate(rules, state);
     
-    const validate = (path) => {
-        const error = v$.value.$errors.find(item => item.$propertyPath == path);
-        
-        if (!error) {
-            return;
-        }
-    
-        return {
-            message: error.$message,
-            variant: "danger",
-            size: "sm",
-            outline: true
-        }
+    const message = (path) => {
+        return v$.value.$errors.find(item => item.$propertyPath == path)?.$message;
     }
 
     const errors = async () => {
@@ -26,7 +15,7 @@ export function useValidation(rules, state) {
 
     return {
         v$: v$,
-        validate: validate,
+        message: message,
         errors: errors
     }
 };

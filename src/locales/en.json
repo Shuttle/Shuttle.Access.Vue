@@ -1,4 +1,5 @@
 {
+    "active": "Active",
     "cancel": "Cancel",
     "change": "Change",
     "confirmation-remove": {
@@ -8,6 +9,7 @@
     "dashboard": "Dashboard",
     "date-activated": "Date activated",
     "date-registered": "Date registered",
+    "deactivated": "Deactivated",
     "exceptions": {
         "session-initialize": "Could not initialize the session.",
         "invalid-credentials": "Invalid credentials.",
@@ -40,6 +42,7 @@
     "permissions-button": "permissions",
     "profile": "Profile",
     "registered-by": "Registered by",
+    "removed": "Removed",
     "role": "Role",
     "roles": "Roles",
     "role-permissions": "Permissions",

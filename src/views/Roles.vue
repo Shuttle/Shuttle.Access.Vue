@@ -9,8 +9,8 @@
             <template #item(permissions)="data">
                 <Button :icon="ShieldCheckIcon" size="xs" outline @click="permissions(data.item)"></Button>
             </template>
-            <template #item(edit)="data">
-                <Button :icon="PencilIcon" size="xs" outline @click="edit(data.item)"></Button>
+            <template #item(rename)="data">
+                <Button :icon="PencilIcon" size="xs" outline @click="rename(data.item)"></Button>
             </template>
             <template #item(remove)="data">
                 <Button :icon="TrashIcon" size="xs" outline variant="danger"
@@ -51,7 +51,7 @@ const fields = useSecureTableFields([
     },
     {
         text: "",
-        name: "edit",
+        name: "rename",
         thClass: "w-1",
         permission: "access://role/manage"
     },
@@ -63,7 +63,7 @@ const fields = useSecureTableFields([
     },
     {
         text: t("role-name"),
-        name: "roleName",
+        name: "name",
     },
 ]);
 
@@ -106,7 +106,7 @@ const permissions = (item) => {
     router.push({ name: "role-permissions", params: { id: item.id } });
 }
 
-const edit = (item) => {
+const rename = (item) => {
     router.push({ name: "role-rename", params: { id: item.id } });
 }
 

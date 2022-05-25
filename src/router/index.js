@@ -99,6 +99,14 @@ const router = createRouter({
                 permission: 'access://permission/manage'
             }
         },
+        {
+            path: "/permission/:id/rename",
+            name: "permission-rename",
+            component: () => import('../views/PermissionRename.vue'),
+            meta: {
+                permission: 'access://permission/manage'
+            }
+        },
     ],
 });
 

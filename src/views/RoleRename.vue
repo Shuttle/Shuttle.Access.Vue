@@ -57,10 +57,6 @@ const submit = async () => {
 }
 
 onMounted(() => {
-    if (!hasRole.value) {
-        return;
-    }
-
     api.get(`roles/${id.value}`)
         .then(item => {
             state.current = item.data.roleName;

@@ -4,7 +4,7 @@
             <div v-for="item in items"
                 class="group flex flex-col items-center justify-center border border-solid border-[color:rgb(var(--sv-border-primary))] rounded-lg p-2 w-full cursor-pointer hover:bg-[color:rgb(var(--sv-bg-primary--hover))] active:bg-[color:rgb(var(--sv-bg-primary--active))]"
                 @click="click(item)">
-                <div class="text-2xl font-bold text-[color:rgb(var(--sv-text-title-primary))] group-hover:text-[color:rgb(var(--sv-text-primary--hover))]">{{ item.title }}</div>
+                <div class="text-2xl font-bold text-[color:rgb(var(--sv-text-title-primary))] group-hover:text-[color:rgb(var(--sv-text-fg-primary--hover))]">{{ item.title }}</div>
                 <div class="text-xl font-semibold">{{ item.value }}</div>
             </div>
         </div>

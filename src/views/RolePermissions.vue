@@ -38,8 +38,6 @@ const rolePermissions = ref([]);
 const permissions = ref([]);
 const busy = ref();
 
-let startDateRegistered;
-
 const fields = [
     {
         text: "",
@@ -68,7 +66,7 @@ const items = computed(() => {
         }),
         (item) => {
             result.push(reactive({
-                permission: item,
+                permission: item.name,
                 active: false,
                 working: false,
             }));
@@ -80,7 +78,7 @@ const items = computed(() => {
 
 const refresh = () => {
     api.get(`roles/${id.value}`).then((response) => {
-        name.value = response.data.roleName;
+        name.value = response.data.name;
         rolePermissions.value = response.data.permissions;
 
         api.get("permissions").then((response) => {

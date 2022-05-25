@@ -2,26 +2,35 @@
     <div>
         <Form size="sm" @submit.prevent="submit()">
             <Title>{{ $t("permission") }}</Title>
-            <Input v-model="state.name" :label="$t('name')" class="mb-2">
+            <Input v-model="state.current" :label="$t('name')" class="mb-2" readonly />
+            <Input v-model="state.name" :label="$t('new-value')" class="mb-2">
                 <template #message>
                     <ValidationMessage :message="validation.message('name')" />
                 </template>
             </Input>
             <div class="flex flex-row justify-end mt-4">
-                <Button @click="submit">{{ $t("save") }}</Button>
+                <Button @click="submit" :disabled="same">{{ $t("save") }}</Button>
             </div>
         </Form>
     </div>
 </template>
 
 <script setup>
-import { computed, reactive } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { required } from '@vuelidate/validators';
+import { useRoute } from 'vue-router';
 import { useValidation } from "@/composables/useValidation"
 import { useAlertStore } from "@/stores/alert";
 import api from "@/api";
 
+const id = ref(useRoute().params.id);
+
+const same = computed(() => {
+    return state.current === state.name;
+})
+
 const state = reactive({
+    current: "",
     name: "",
 });
 
@@ -43,11 +52,19 @@ const submit = async () => {
     }
 
     api
-        .post("permissions", {
+        .patch(`permissions/${id.value}/name`, {
             name: state.name,
         })
         .then(function () {
             useAlertStore().requestSent();
         });
 }
+
+onMounted(() => {
+    api.get(`permissions/${id.value}`)
+        .then(item => {
+            state.current = item.data.name;
+            state.name = item.data.name;
+        });
+})
 </script>
