@@ -117,7 +117,7 @@ const getRoleItem = (roleId) => {
     return result;
 };
 
-const getRoleStatus = () => {
+const getWorkingRoles = () => {
     if (workingCount.value === 0) {
         return;
     }
@@ -135,7 +135,7 @@ const getRoleStatus = () => {
         })
         .then(() => {
             setTimeout(() => {
-                getRoleStatus();
+                getWorkingRoles();
             }, 1000);
         });
 };
@@ -157,7 +157,7 @@ const toggle = (item) => {
             active: item.active,
         });
 
-    getRoleStatus();
+    getWorkingRoles();
 }
 
 onMounted(() => {

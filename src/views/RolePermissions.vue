@@ -4,7 +4,7 @@
         <Table :fields="fields" :items="items" :busy="busy" striped>
             <template #item(active)="data">
                 <div v-if="data.item.working" class="flex flex-row items-center justify-center">
-                    <ClockIcon  class="sv-icon"/>
+                    <ClockIcon class="sv-icon" />
                 </div>
                 <Checkbox v-else v-model="data.item.active" @click="toggle(data.item)" />
             </template>
@@ -46,31 +46,33 @@ const fields = [
     },
     {
         text: t("permission"),
-        name: "permission",
+        name: "name",
+    },
+    {
+        text: t("status"),
+        name: "statusName",
     }
 ];
 
 const items = computed(() => {
     var result = [];
 
-    Array.prototype.forEach.call(rolePermissions.value, (item) => {
+    rolePermissions.value.forEach(item => {
         result.push(reactive({
-            permission: item,
+            ...item,
             active: true,
             working: false,
         }));
     });
-    Array.prototype.forEach.call(
-        permissions.value.filter((item) => {
-            return !result.some((r) => r.permission == item);
-        }),
-        (item) => {
-            result.push(reactive({
-                permission: item.name,
-                active: false,
-                working: false,
-            }));
-        }
+    permissions.value.filter((item) => {
+        return !result.some((r) => r.id == item.id);
+    }).forEach(item => {
+        result.push(reactive({
+            ...item,
+            active: false,
+            working: false,
+        }));
+    }
     );
 
     return result;
@@ -113,25 +115,23 @@ const getPermissionItem = (permission) => {
     return result;
 };
 
-const getPermissionStatus = () => {
+const getPermissionAvailability = () => {
     if (workingCount.value === 0) {
         return;
     }
 
     api
-        .post(`roles/${id.value}/permission-status`, {
-            values: workingItems.value.map(item => item.permission)
+        .post(`roles/${id.value}/permissions/availability`, {
+            values: workingItems.value.map(item => item.id)
         })
         .then(function (response) {
-            Array.prototype.forEach.call(response.data, (status) => {
-                const item = getPermissionItem(status.permission);
-                
-                item.working = status.active;
+            Array.prototype.forEach.call(response.data, (availability) => {
+                getPermissionItem(status.permission).working = availability.active;
             });
         })
         .then(() => {
             setTimeout(() => {
-                getPermissionStatus();
+                getPermissionAvailability();
             }, 1000);
         });
 };
@@ -142,19 +142,15 @@ const toggle = (item) => {
         return;
     }
 
-    if (workingCount.value == 0) {
-        startDateRegistered = new Date().toISOString();
-    }
-
     item.working = true;
 
     api
         .patch(`roles/${id.value}/permissions`, {
-            permission: item.permission,
+            permissionId: item.id,
             active: item.active,
         });
 
-    getPermissionStatus();
+    getPermissionAvailability();
 }
 
 onMounted(() => {

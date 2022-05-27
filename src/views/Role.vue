@@ -2,7 +2,11 @@
     <div>
         <Form size="sm" @submit.prevent="submit()">
             <Title>{{ $t("role") }}</Title>
-            <Input v-model="state.name" :label="$t('name')" class="mb-2" :alert="validation.validate('name')" />
+            <Input v-model="state.name" :label="$t('name')" class="mb-2">
+            <template #message>
+                <ValidationMessage :message="validation.message('name')" />
+            </template>
+            </Input>
             <div class="flex flex-row justify-end mt-4">
                 <Button @click="submit">{{ $t("save") }}</Button>
             </div>

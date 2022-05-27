@@ -7,7 +7,11 @@
         </Strip>
         <Table :fields="fields" :items="items" :busy="busy" striped>
             <template #item(status)="data">
-                <ButtonGroup :buttons="status" @click="registerStatus" v-model="data.item.status" />
+                <ButtonGroup :buttons="status" @click="registerStatus" v-model="data.item.status"
+                    :disabled="data.item.working" />
+                <div v-if="data.item.working" class="flex flex-row items-center justify-center">
+                    <ClockIcon  class="sv-icon"/>
+                </div>
             </template>
             <template #item(rename)="data">
                 <Button :icon="PencilIcon" size="xs" outline @click="rename(data.item)"></Button>
@@ -24,15 +28,13 @@
 
 <script setup>
 import api from "@/api";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { PlusIcon, RefreshIcon, PencilIcon } from "@heroicons/vue/outline";
 import { useRouter } from "vue-router";
 import { useAlertStore } from "@/stores/alert";
-import { useConfirmationStore } from "@/stores/confirmation";
 import { useSecureTableFields } from "@/composables/useSecureTableFields";
-
-var confirmationStore = useConfirmationStore();
+import { ClockIcon } from "@heroicons/vue/outline";
 
 const { t } = useI18n({ useScope: 'global' });
 const router = useRouter();
@@ -74,6 +76,45 @@ const fields = useSecureTableFields([
 
 const items = ref([]);
 
+const workingItems = computed(() => {
+    return items.value.filter((item) => {
+        return item.working;
+    });
+});
+
+const workingCount = computed(() => {
+    return workingItems.value.length;
+});
+
+const getPermissionItem = (id) => {
+    return items.value.find(item => {
+        return item.id === id;
+    })
+};
+
+const getWorkingPermissions = () => {
+    if (workingCount.value === 0) {
+        return;
+    }
+
+    api
+        .post(`permissions/search`, {
+            ids: workingItems.value.map(item => item.id)
+        })
+        .then(function (response) {
+            Array.prototype.forEach.call(response.data, (item) => {
+                var permission = getPermissionItem(item.id);
+
+                permission.working = permission.status !== item.status;
+            });
+        })
+        .then(() => {
+            setTimeout(() => {
+                getWorkingRoles();
+            }, 1000);
+        });
+};
+
 const refresh = () => {
     busy.value = true;
 
@@ -81,22 +122,20 @@ const refresh = () => {
         .get("permissions")
         .then(function (response) {
             items.value = response?.data;
-//            items.value = response?.data.map(item => { return reactive(item); });
         })
         .finally(function () {
             busy.value = false;
         });
 }
 
-const remove = (item) => {
-    confirmationStore.setIsOpen(false);
+const registerStatus = (item) => {
+    item.working = true;
 
     api
         .delete(`permissions/${item.id}`)
         .then(function () {
             useAlertStore().requestSent();
-
-            refresh();
+            getWorkingPermissions();
         });
 }
 
