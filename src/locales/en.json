@@ -11,7 +11,7 @@
     "date-registered": "Date registered",
     "deactivated": "Deactivated",
     "exceptions": {
-        "session-initialize": "Could not initialize the session.",
+        "session-initialize": "Your session has expired.  Please sign in again.",
         "invalid-credentials": "Invalid credentials.",
         "insufficient-permission": "You do not have permission to access the requested view.  Please contact your system administrator if you require access."
     },

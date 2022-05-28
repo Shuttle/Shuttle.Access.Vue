@@ -31,6 +31,7 @@ import { useI18n } from "vue-i18n";
 import router from "@/router";
 
 const { t } = useI18n({ useScope: 'global' });
+const alertStore = useAlertStore();
 
 const state = reactive({
     identityName: "",
@@ -78,9 +79,11 @@ const signIn = async () => {
     })
         .then(() => {
             router.push({ name: "dashboard" });
+
+            alertStore.remove("session-initialize");
         })
         .catch(error => {
-            useAlertStore().add({
+            alertStore.add({
                 message: error.response?.status == 400 ? t("exceptions.invalid-credentials") : error.toString(),
                 variant: "danger"
             });

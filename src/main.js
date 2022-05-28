@@ -39,8 +39,11 @@ await sessionStore.initialize()
     .catch(error => {
         alertStore.add({
             message: i18n.global.t("exceptions.session-initialize", { error: error.toString() }),
-            variant: "danger"
-        })
+            variant: "danger",
+            key: "session-initialize"
+        });
+
+        router.push({ path: "/signin" });
     });
 
 if (window.location.pathname === "/") {

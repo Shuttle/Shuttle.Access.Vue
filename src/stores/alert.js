@@ -17,7 +17,7 @@ export const useAlertStore = defineStore("alert", {
                 return;
             }
 
-            if (alert.key || alert.name) {
+            if (alert.key) {
                 this.remove(alert);
             }
 
@@ -38,12 +38,12 @@ export const useAlertStore = defineStore("alert", {
                 this._monitor();
             }
         },
-        remove(alert) {
-            if (!alert?.key) {
+        remove(key) {
+            if (!key) {
                 return false;
             }
 
-            const index = this.alerts.findIndex(item => item.key === alert.key);
+            const index = this.alerts.findIndex(item => item.key === key);
 
             if (index < 0) {
                 return false;
