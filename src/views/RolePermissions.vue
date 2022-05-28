@@ -99,20 +99,8 @@ const workingCount = computed(() => {
     return workingItems.value.length;
 });
 
-const getPermissionItem = (permission) => {
-    var result;
-
-    Array.prototype.forEach.call(items.value, (item) => {
-        if (result) {
-            return;
-        }
-
-        if (item.permission === permission) {
-            result = item;
-        }
-    });
-
-    return result;
+const getPermissionItem = (id) => {
+    return items.value.find(item => item.id === id) 
 };
 
 const getPermissionAvailability = () => {
@@ -125,8 +113,8 @@ const getPermissionAvailability = () => {
             values: workingItems.value.map(item => item.id)
         })
         .then(function (response) {
-            Array.prototype.forEach.call(response.data, (availability) => {
-                getPermissionItem(status.permission).working = availability.active;
+            response.data.forEach(availability => {
+                getPermissionItem(availability.id).working = availability.active;
             });
         })
         .then(() => {
