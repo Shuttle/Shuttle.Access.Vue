@@ -102,7 +102,7 @@ const getWorkingPermissions = () => {
             ids: workingItems.value.map(item => item.id)
         })
         .then(function (response) {
-            Array.prototype.forEach.call(response.data, (item) => {
+            response.data.forEach(item => {
                 var permission = getPermissionItem(item.id);
 
                 permission.working = permission.status !== item.status;

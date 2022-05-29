@@ -3,10 +3,18 @@
         <Form size="sm" @submit.prevent="submit()">
             <Title>{{ $t("identity") }}</Title>
             <Input v-model="state.identityName" :label="$t('identity-name')" class="mb-2" :icon-start="UserIcon"
-                autocomplete="username" :alert="validation.validate('identityName')" />
+                autocomplete="username">
+            <template #message>
+                <ValidationMessage :message="validation.message('identityName')" />
+            </template>
+            </Input>
             <Input v-model="state.password" :label="$t('password')" :icon-start="ShieldExclamationIcon"
                 :icon-end="getPasswordIcon()" icon-end-clickable @icon-end-click="togglePasswordIcon"
-                :type="getPasswordType()" autocomplete="current-password" :alert="validation.validate('password')" />
+                :type="getPasswordType()" autocomplete="current-password">
+            <template #message>
+                <ValidationMessage :message="validation.message('password')" />
+            </template>
+            </Input>
             <div class="flex flex-row justify-end mt-4">
                 <Button @click="submit">{{ $t("save") }}</Button>
             </div>

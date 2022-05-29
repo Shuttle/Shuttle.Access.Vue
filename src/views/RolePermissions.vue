@@ -100,7 +100,7 @@ const workingCount = computed(() => {
 });
 
 const getPermissionItem = (id) => {
-    return items.value.find(item => item.id === id) 
+    return items.value.find(item => item.id === id);
 };
 
 const getPermissionAvailability = () => {

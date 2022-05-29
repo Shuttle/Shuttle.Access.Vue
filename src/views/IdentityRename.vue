@@ -3,7 +3,11 @@
         <Form size="sm" @submit.prevent="submit()">
             <Title>{{ $t("identity") }}</Title>
             <Input v-model="state.current" :label="$t('name')" class="mb-2" readonly />
-            <Input v-model="state.name" :label="$t('new-value')" class="mb-2" :alert="validation.validate('name')" />
+            <Input v-model="state.name" :label="$t('new-value')" class="mb-2">
+            <template #message>
+                <ValidationMessage :message="validation.message('identityName')" />
+            </template>
+            </Input>
             <div class="flex flex-row justify-end mt-4">
                 <Button @click="submit" :disabled="same">{{ $t("save") }}</Button>
             </div>
@@ -57,10 +61,6 @@ const submit = async () => {
 }
 
 onMounted(() => {
-    if (!hasRole.value) {
-        return;
-    }
-
     api.get(`identities/${id.value}`)
         .then(item => {
             state.current = item.data.name;

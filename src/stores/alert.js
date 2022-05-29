@@ -17,9 +17,7 @@ export const useAlertStore = defineStore("alert", {
                 return;
             }
 
-            if (alert.key) {
-                this.remove(alert);
-            }
+            this.remove(alert.key);
 
             alert.expire = alert.expire ?? true;
             alert.dismissable = !!alert.key;

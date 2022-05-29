@@ -37,7 +37,7 @@ const router = createRouter({
         },
         {
             path: "/identity/:id/rename",
-            name: "identity--rename",
+            name: "identity-rename",
             component: () => import('../views/IdentityRename.vue'),
             meta: {
                 permission: 'access://identity/manage'
@@ -126,8 +126,8 @@ router.beforeEach(async (to, from, next) => {
         return false;
     }
 
-    if (!!to.meta.authenticated && !sessionStore.authenticated && to.name !== 'login') {
-        return { name: "login" }
+    if (!!to.meta.authenticated && !sessionStore.authenticated && to.name !== 'signin') {
+        return { name: "signin" }
     }
 
     return next();

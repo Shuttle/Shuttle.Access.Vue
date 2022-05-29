@@ -4,7 +4,7 @@
         <Table :fields="fields" :items="items" :busy="busy" striped>
             <template #item(active)="data">
                 <div v-if="data.item.working" class="flex flex-row items-center justify-center">
-                    <ClockIcon  class="sv-icon"/>
+                    <ClockIcon class="sv-icon" />
                 </div>
                 <Checkbox v-else v-model="data.item.active" @click="toggle(data.item)" />
             </template>
@@ -38,8 +38,6 @@ const identityRoles = ref([]);
 const roles = ref([]);
 const busy = ref();
 
-let startDateRegistered;
-
 const fields = [
     {
         text: "",
@@ -55,7 +53,7 @@ const fields = [
 const items = computed(() => {
     var result = [];
 
-    Array.prototype.forEach.call(identityRoles.value, (item) => {
+    identityRoles.value.forEach(item => {
         result.push(reactive({
             roleId: item.id,
             roleName: item.name,
@@ -63,19 +61,16 @@ const items = computed(() => {
             working: false,
         }));
     });
-    Array.prototype.forEach.call(
-        roles.value.filter((item) => {
-            return !result.some((r) => r.roleId == item.id);
-        }),
-        (item) => {
-            result.push(reactive({
-                roleId: item.id,
-                roleName: item.roleName,
-                active: false,
-                working: false,
-            }));
-        }
-    );
+    roles.value.filter((item) => {
+        return !result.some((r) => r.roleId == item.id);
+    }).forEach(item => {
+        result.push(reactive({
+            roleId: item.id,
+            roleName: item.name,
+            active: false,
+            working: false,
+        }));
+    });
 
     return result;
 });
@@ -101,20 +96,8 @@ const workingCount = computed(() => {
     return workingItems.value.length;
 });
 
-const getRoleItem = (roleId) => {
-    var result;
-
-    Array.prototype.forEach.call(items.value, (item) => {
-        if (result) {
-            return;
-        }
-
-        if (item.roleId === roleId) {
-            result = item;
-        }
-    });
-
-    return result;
+const getRoleItem = (id) => {
+    return items.value.find(item => item.roleId === id);
 };
 
 const getWorkingRoles = () => {
@@ -123,14 +106,12 @@ const getWorkingRoles = () => {
     }
 
     api
-        .post(`identities/${id.value}/role-status`, {
+        .post(`identities/${id.value}/roles/availability`, {
             values: workingItems.value.map(item => item.roleId)
         })
         .then(function (response) {
-            Array.prototype.forEach.call(response.data, (status) => {
-                const item = getRoleItem(status.roleId);
-                
-                item.working = status.active;
+            response.data.forEach(availability => {
+                getRoleItem(availability.id).working = availability.active;
             });
         })
         .then(() => {
@@ -144,10 +125,6 @@ const toggle = (item) => {
     if (item.working) {
         alertStore.working();
         return;
-    }
-
-    if (workingCount.value == 0) {
-        startDateRegistered = new Date().toISOString();
     }
 
     item.working = true;
