@@ -1,9 +1,8 @@
 const configuration = {
     url: null,
-    environment: (import.meta.env.VITE_NODE_ENV || 'development'),
 
     debugging(){
-        return this.environment.toLowerCase() === 'development';
+        return import.meta.env.DEV;
     },
 
     getApiUrl(path){
@@ -12,7 +11,7 @@ const configuration = {
 }
 
 if (!import.meta.env.VITE_API_URL) {
-    throw new Error("Configuration item 'import.meta.env.VITE_API_URL' has not been set.");
+    throw new Error("Configuration item 'VITE_API_URL' has not been set.");
 }
 
 configuration.url = `${import.meta.env.VITE_API_URL}${import.meta.env.VITE_API_URL.endsWith("/") ? "" : "/"}`;
