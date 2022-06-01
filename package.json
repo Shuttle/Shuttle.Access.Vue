@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "build": "vite build",
-    "docker:build": "docker build -t shuttle/access/vue:latest .",
+    "docker:build": "docker build -t shuttle/access-vue:latest .",
+    "docker:push": "docker push shuttle/access-vue:latest",
     "test:unit": "vitest --environment jsdom",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "dev": "vite",
