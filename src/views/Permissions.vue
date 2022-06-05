@@ -7,10 +7,12 @@
         </Strip>
         <Table :fields="fields" :items="items" :busy="busy" striped>
             <template #item(status)="data">
-                <ButtonGroup :buttons="status" @click="registerStatus" v-model="data.item.status"
-                    :disabled="data.item.working" />
-                <div v-if="data.item.working" class="flex flex-row items-center justify-center">
-                    <ClockIcon  class="sv-icon"/>
+                <div class="flex flex-row items-center">
+                    <ButtonGroup :buttons="status" @click="(button) => setStatus(data.item, button)"
+                        v-model="data.item.status" :disabled="data.item.working" />
+                    <div v-if="data.item.working" class="flex flex-row items-center justify-center">
+                        <ClockIcon class="sv-icon" />
+                    </div>
                 </div>
             </template>
             <template #item(rename)="data">
@@ -110,7 +112,7 @@ const getWorkingPermissions = () => {
         })
         .then(() => {
             setTimeout(() => {
-                getWorkingRoles();
+                getWorkingPermissions();
             }, 1000);
         });
 };
@@ -128,11 +130,13 @@ const refresh = () => {
         });
 }
 
-const registerStatus = (item) => {
-    item.working = true;
+const setStatus = (permission, button) => {
+    permission.working = true;
 
     api
-        .delete(`permissions/${item.id}`)
+        .patch(`permissions/${permission.id}`, {
+            status: button.value
+        })
         .then(function () {
             useAlertStore().requestSent();
             getWorkingPermissions();

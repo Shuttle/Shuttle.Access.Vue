@@ -23,7 +23,8 @@ api.interceptors.response.use((response) => response, (error) => {
 
     alertStore.add({
         message: error.response.data || error.response.statusText || "(unknown communication/network error)",
-        variant: "danger"
+        variant: "danger",
+        name: "api-error"
     });
 
     return Promise.reject(error);

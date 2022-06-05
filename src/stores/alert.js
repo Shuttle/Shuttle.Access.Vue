@@ -5,6 +5,8 @@ export let messages = {
     working: "Please wait until the current operation completes and then try again."
 };
 
+let key = 0;
+
 export const useAlertStore = defineStore("alert", {
     state: () => {
         return {
@@ -17,31 +19,25 @@ export const useAlertStore = defineStore("alert", {
                 return;
             }
 
-            this.remove(alert.key);
+            this.remove(alert.name);
 
             alert.expire = alert.expire ?? true;
-            alert.dismissable = !!alert.key;
+            alert.dismissable = !!alert.name;
 
             if (alert.expire) {
-                let expiryDate = new Date();
-
-                expiryDate.setSeconds(expiryDate.getSeconds() + 10);
-
-                alert.expiryDate = expiryDate;
+                alert.expirySeconds = 10;
             }
+
+            alert.key = `${alert.name}-${key++}`
 
             this.alerts.push(alert);
-
-            if (this.alerts.length == 1) {
-                this._monitor();
-            }
         },
-        remove(key) {
-            if (!key) {
+        remove(name) {
+            if (!name) {
                 return false;
             }
 
-            const index = this.alerts.findIndex(item => item.key === key);
+            const index = this.alerts.findIndex(item => item.name === name);
 
             if (index < 0) {
                 return false;
@@ -54,30 +50,14 @@ export const useAlertStore = defineStore("alert", {
         requestSent() {
             this.add({
                 message: messages.requestSent,
-                key: "request-sent"
+                name: "request-sent"
             })
         },
         working() {
             this.add({
                 message: messages.working,
-                key: "working-message",
+                name: "working-message",
             })
         },
-        _monitor() {
-            const self = this;
-            const date = new Date();
-
-            if (!this.alerts?.length) {
-                return;
-            }
-
-            this.alerts = this.alerts.filter(item => {
-                return (item.expire && item.expiryDate && item.expiryDate < date) ? undefined : alert;
-            });
-
-            setTimeout(function () {
-                self._monitor();
-            }, 500);
-        }
     },
 });
