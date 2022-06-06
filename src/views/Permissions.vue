@@ -10,7 +10,7 @@
                 <div class="flex flex-row items-center">
                     <ButtonGroup :buttons="status" @click="(button) => setStatus(data.item, button)"
                         v-model="data.item.status" :disabled="data.item.working" />
-                    <div v-if="data.item.working" class="flex flex-row items-center justify-center">
+                    <div v-if="data.item.working" class="flex flex-row items-center justify-center ml-2">
                         <ClockIcon class="sv-icon" />
                     </div>
                 </div>
@@ -61,13 +61,13 @@ const fields = useSecureTableFields([
     {
         text: "",
         name: "rename",
-        thClass: "w-1",
+        thClass: "xl:w-1",
         permission: "access://pemission/manage"
     },
     {
         text: t("status"),
         name: "status",
-        thClass: "w-64",
+        thClass: "xl:w-72",
         permission: "access://pemission/manage"
     },
     {
@@ -138,7 +138,6 @@ const setStatus = (permission, button) => {
             status: button.value
         })
         .then(function () {
-            useAlertStore().requestSent();
             getWorkingPermissions();
         });
 }

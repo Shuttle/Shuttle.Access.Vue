@@ -22,7 +22,7 @@ export const useAlertStore = defineStore("alert", {
             this.remove(alert.name);
 
             alert.expire = alert.expire ?? true;
-            alert.dismissable = !!alert.name;
+            alert.dismissable = alert.dismissable || !!alert.name;
 
             if (alert.expire) {
                 alert.expirySeconds = 10;

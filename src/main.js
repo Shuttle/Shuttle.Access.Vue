@@ -40,7 +40,7 @@ await sessionStore.initialize()
         alertStore.add({
             message: i18n.global.t("exceptions.session-initialize", { error: error.toString() }),
             variant: "danger",
-            key: "session-initialize"
+            name: "session-initialize"
         });
 
         router.push({ path: "/signin" });
