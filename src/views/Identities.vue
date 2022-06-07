@@ -9,6 +9,9 @@
             <template #item(roles)="data">
                 <Button :icon="UserGroupIcon" size="xs" outline @click="roles(data.item)"></Button>
             </template>
+            <template #item(password)="data">
+                <Button :icon="ShieldExclamationIcon" size="xs" outline @click="password(data.item)"></Button>
+            </template>
             <template #item(edit)="data">
                 <Button :icon="PencilIcon" size="xs" outline @click="edit(data.item)"></Button>
             </template>
@@ -30,7 +33,7 @@
 import api from "@/api";
 import { onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { PencilIcon, PlusIcon, RefreshIcon, TrashIcon, UserGroupIcon } from "@heroicons/vue/outline";
+import { PencilIcon, PlusIcon, RefreshIcon, ShieldExclamationIcon, TrashIcon, UserGroupIcon } from "@heroicons/vue/outline";
 import { useDateFormatter } from "@/composables/useDateFormatter";
 import { useSecureTableFields } from "@/composables/useSecureTableFields";
 import { useRouter } from "vue-router";
@@ -48,19 +51,25 @@ const fields = useSecureTableFields([
         text: "",
         name: "roles",
         thClass: "w-1",
-        permission: "access://identity/manage"
+        permission: "access://identity/register"
+    },
+    {
+        text: "",
+        name: "password",
+        thClass: "w-1",
+        permission: "access://identity/register"
     },
     {
         text: "",
         name: "edit",
         thClass: "w-1",
-        permission: "access://identity/manage"
+        permission: "access://identity/register"
     },
     {
         text: "",
         name: "remove",
         thClass: "w-1",
-        permission: "access://identity/manage"
+        permission: "access://identity/register"
     },
     {
         text: t("name"),
@@ -123,6 +132,10 @@ const add = () => {
 
 const roles = (item) => {
     router.push({ name: "identity-roles", params: { id: item.id } });
+}
+
+const password = (item) => {
+    router.push({ name: "password", params: { id: item.id } });
 }
 
 const edit = (item) => {

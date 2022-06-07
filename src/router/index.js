@@ -10,11 +10,6 @@ const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
-            path: '/signin',
-            name: 'sign-in',
-            component: () => import('../views/SignIn.vue')
-        },
-        {
             path: "/dashboard",
             name: "dashboard",
             component: () => import('../views/Dashboard.vue')
@@ -50,7 +45,41 @@ const router = createRouter({
             meta: {
                 permission: 'access://identity/view'
             }
-        }, 
+        },
+        {
+            path: '/password/:id',
+            name: 'password',
+            component: () => import('../views/Password.vue')
+        },
+        {
+            path: "/permissions",
+            name: "permissions",
+            component: () => import('../views/Permissions.vue'),
+            meta: {
+                permission: 'access://permission/view'
+            }
+        },
+        {
+            path: "/permission",
+            name: "permission",
+            component: () => import('../views/Permission.vue'),
+            meta: {
+                permission: 'access://permission/manage'
+            }
+        },
+        {
+            path: "/permission/:id/rename",
+            name: "permission-rename",
+            component: () => import('../views/PermissionRename.vue'),
+            meta: {
+                permission: 'access://permission/manage'
+            }
+        },
+        {
+            path: '/signin',
+            name: 'sign-in',
+            component: () => import('../views/SignIn.vue')
+        },
         {
             path: "/roles",
             name: "roles",
@@ -81,30 +110,6 @@ const router = createRouter({
             component: () => import('../views/RolePermissions.vue'),
             meta: {
                 permission: 'access://role/view'
-            }
-        }, 
-        {
-            path: "/permissions",
-            name: "permissions",
-            component: () => import('../views/Permissions.vue'),
-            meta: {
-                permission: 'access://permission/view'
-            }
-        },
-        {
-            path: "/permission",
-            name: "permission",
-            component: () => import('../views/Permission.vue'),
-            meta: {
-                permission: 'access://permission/manage'
-            }
-        },
-        {
-            path: "/permission/:id/rename",
-            name: "permission-rename",
-            component: () => import('../views/PermissionRename.vue'),
-            meta: {
-                permission: 'access://permission/manage'
             }
         },
     ],

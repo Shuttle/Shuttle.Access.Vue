@@ -92,7 +92,7 @@ const profileItems = computed(() => {
             items: [
                 {
                     text: t("password"),
-                    to: "/password"
+                    to: "/password/token"
                 },
                 {
                     type: "divider"
