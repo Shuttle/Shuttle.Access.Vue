@@ -81,8 +81,6 @@ export const useSessionStore = defineStore("session", {
                     return;
                 }
 
-                var usingToken = !!credentials.token;
-
                 return axios.post(configuration.getApiUrl('sessions'), {
                     identityName: credentials.identityName,
                     password: credentials.password,

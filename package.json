@@ -22,7 +22,6 @@
     "moment": "^2.29.3",
     "pinia": "^2.0.13",
     "postcss-cli": "^9.1.0",
-    "shuttle-access": "^3.1.1",
     "shuttle-guard": "^1.0.1",
     "shuttle-vue3": "0.0.67",
     "vue": "^3.2.33",
