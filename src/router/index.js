@@ -125,7 +125,8 @@ router.beforeEach(async (to, from, next) => {
     if (!!to.meta.permission && !sessionStore.hasPermission(to.meta.permission)) {
         useAlertStore().add({
             message: messages.insufficientPermission,
-            variant: "info"
+            variant: "info",
+            name: "insufficient-permission"
         })
 
         return false;

@@ -9,7 +9,7 @@ const alertStore = useAlertStore();
 const sessionStore = useSessionStore();
 
 api.interceptors.request.use(function (config) {
-    config.headers['access-session-token'] = sessionStore.token;
+    config.headers['Authorization'] = `access-session-token ${sessionStore.token}`;
 
     return config;
 });
